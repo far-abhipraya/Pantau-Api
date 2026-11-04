@@ -43,6 +43,7 @@ Sumber: NASA LANCE FIRMS (Sensor Terra & Aqua MODIS 1km).
 | `bright_t31` | Float | Suhu kecerahan Channel 31 (Kelvin) | `294.24` |
 | `frp` | Float | Fire Radiative Power (Megawatt) | `3.99` |
 | `daynight` | String | Waktu pengamatan (`D`=Day, `N`=Night) | `D` |
+| `type` | Integer | Tipe hotspot (`0`=vegetation fire, `1`=volcano, `2`=static land source, `3`=offshore) | `0` |
 
 ---
 
@@ -101,3 +102,4 @@ Sumber: SiPongi+ Kementerian Kehutanan (Kemenhut) & BNPB.
 | `source` | String | Sumber data (`SIPONGI KEMENHUT` / `BNPB`) |
 | `hotspot_count` | Integer | Jumlah hotspot terverifikasi |
 | `burned_area_ha` | Float | Estimasi luas kebakaran hutan/lahan (hektar) |
+

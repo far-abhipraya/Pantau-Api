@@ -17,7 +17,7 @@ Pemilik: A = data/backend, B = frontend/ML.
 - [ ] `scripts/download_firms.py`: unduh arsip VIIRS (dan MODIS) per tahun untuk bbox Indonesia ke `C:\karhutla-data\downloads`.
 - [ ] Hitung jumlah baris per tahun/sensor; tentukan rentang tahun agar total >= 1.000.000 baris (target nyaman 3-5 juta).
 - [ ] `scripts/download_chirps.py` dan `download_era5.py` untuk rentang yang sama.
-- [ ] Simpan 50-100 baris tiap sumber ke `data_samples/`; catat header aktual di `docs/data-dictionary.md`.
+- [x] Simpan 50-100 baris tiap sumber ke `data_samples/`; catat header aktual di `docs/data-dictionary.md`.
 - Selesai bila: tabel jumlah baris per file terlampir.
 
 ## Fase 2: Upload ke HDFS (A backend, B frontend)
