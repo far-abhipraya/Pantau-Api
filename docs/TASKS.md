@@ -4,12 +4,12 @@ Kerjakan berurutan. Akhiri tiap fase dengan laporan dan tunggu persetujuan pengg
 Pemilik: A = data/backend, B = frontend/ML.
 
 ## Fase 0: Verifikasi Lingkungan (A)
-- [ ] Buat `C:\projects\karhutla-watch` dan `C:\karhutla-data\{staging,spark-tmp,serving,downloads}`; inisialisasi git dan `.gitignore`.
-- [ ] Jalankan `scripts\check_env.py`; semua cek HDFS/Spark/Java lulus.
-- [ ] Verifikasi PySpark vs Python 3.14; putuskan venv (3.12/3.13 bila perlu); laporkan.
-- [ ] Smoke test PySpark: tulis dan baca CSV dan Parquet ke `hdfs://localhost:9000/karhutla/_smoke_test`, lalu hapus.
-- [ ] `hdfs dfs -mkdir -p` struktur `/karhutla/{raw/firms_hist,raw/firms_nrt,raw/weather,clean/hotspot,clean/weather,features/grid_daily,models,predictions,analytics,logs/jobs}`.
-- [ ] Verifikasi paket Python terpasang (fastapi, uvicorn, pydantic, sqlalchemy, duckdb, pyarrow, pandas).
+- [x] Buat `C:\projects\karhutla-watch` dan `C:\karhutla-data\{staging,spark-tmp,serving,downloads}`; inisialisasi git dan `.gitignore`.
+- [x] Jalankan `scripts\check_env.py`; semua cek HDFS/Spark/Java lulus.
+- [x] Verifikasi PySpark vs Python 3.14; putuskan venv (3.12/3.13 bila perlu); laporkan.
+- [x] Smoke test PySpark: tulis dan baca CSV dan Parquet ke `hdfs://localhost:9000/karhutla/_smoke_test`, lalu hapus.
+- [x] `hdfs dfs -mkdir -p` struktur `/karhutla/{raw/firms_hist,raw/firms_nrt,raw/weather,clean/hotspot,clean/weather,features/grid_daily,models,predictions,analytics,logs/jobs}`.
+- [x] Verifikasi paket Python terpasang (fastapi, uvicorn, pydantic, sqlalchemy, duckdb, pyarrow, pandas).
 - Selesai bila: laporan kompatibilitas dan smoke test sukses terlampir.
 
 ## Fase 1: Pengumpulan Data (A)
