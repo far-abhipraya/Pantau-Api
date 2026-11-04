@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.next/
+*.parquet
+*.csv
+!data_samples/*.csv
+*.db
+*.log
+.DS_Store
