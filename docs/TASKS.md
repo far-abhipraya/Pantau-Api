@@ -21,9 +21,9 @@ Pemilik: A = data/backend, B = frontend/ML.
 - Selesai bila: tabel jumlah baris per file terlampir.
 
 ## Fase 2: Upload ke HDFS (A backend, B frontend)
-- [ ] Backend: `services/hdfs_cli.py`, endpoint upload init/chunk/complete, `datasets`, `summary`, `preview`, `delete`.
-- [ ] Frontend halaman `/`: drag and drop, progress, pratinjau, total baris, indikator >= 1 juta, daftar file.
-- [ ] Uji: upload CSV >= 200 MB; ukuran di HDFS sama dengan lokal; memori backend stabil.
+- [x] Backend: `services/hdfs_cli.py`, endpoint upload init/chunk/complete, `datasets`, `summary`, `preview`, `delete`.
+- [x] Frontend halaman `/`: drag and drop, progress, pratinjau, total baris, indikator >= 1 juta, daftar file.
+- [x] Uji: upload CSV >= 200 MB; ukuran di HDFS sama dengan lokal; memori backend stabil.
 - Selesai bila: AC-1 dan AC-2 terpenuhi.
 
 ## Fase 3: Pre-processing (A job, B UI)
