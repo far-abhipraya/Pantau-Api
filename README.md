@@ -1,12 +1,12 @@
-# KarhutlaWatch
+# PantauApi
 
-Platform big data (Hadoop HDFS, Spark, NiFi) untuk memantau hotspot karhutla Indonesia dan memprediksi risikonya.
+Platform big data (Hadoop HDFS, Spark, NiFi) untuk memantau hotspot karhutla Indonesia dan memperkirakan risikonya.
+
+Tiga halaman: Peta (`/`), Data & Pre-processing (`/data`), Analitik (`/analytics`).
 
 ## Dokumen
-- `AGENTS.md`: aturan untuk agent (selalu aktif)
-- `.agents/rules/`: aturan terperinci (Windows/Hadoop, data/ML, frontend/backend)
-- `.agents/workflows/start-phase.md`: workflow `/start-phase <nomor>`
-- `docs/PRD.md`: kebutuhan produk (v1.1)
+- `AGENTS.md`: aturan agent (selalu aktif); `.agents/rules/`: aturan terperinci; `.agents/workflows/start-phase.md`: `/start-phase <nomor>`
+- `docs/PRD.md` (v1.2), `docs/UI_SPEC.md`, `docs/DESIGN.md`, `docs/STITCH_PROMPTS.md`
 - `docs/ENVIRONMENT.md`, `docs/TASKS.md`, `docs/DATA_SOURCES.md`
 
 ## Mulai Cepat
