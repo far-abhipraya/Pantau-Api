@@ -1,0 +1,313 @@
+{
+  "job_id": "preprocess-20261116-220718",
+  "status": "COMPLETED",
+  "started_at": "2026-11-16T22:07:36+00:00",
+  "finished_at": "2026-11-16T22:09:26+00:00",
+  "inputs": [
+    "hdfs://localhost:9000/karhutla/raw/firms_hist/*.csv",
+    "hdfs://localhost:9000/karhutla/raw/firms_nrt/*.csv"
+  ],
+  "output_path": "/karhutla/clean/hotspot_api_test",
+  "config": {
+    "cleaning": {
+      "drop_duplicates": true,
+      "filter_bbox": true,
+      "min_confidence": "low",
+      "null_strategy": "constant",
+      "null_constant": 0.0,
+      "outlier_method": "none",
+      "outlier_column": "frp",
+      "outlier_threshold": 1.5
+    },
+    "transform": {
+      "time_parts": true
+    },
+    "normalization": {
+      "method": "minmax"
+    },
+    "spatial": {
+      "grid_id": true,
+      "province": true
+    },
+    "inputs": null,
+    "output": "/karhutla/clean/hotspot_api_test"
+  },
+  "rows": {
+    "input": 2134784,
+    "invalid_coords_or_time": 0,
+    "out_of_bbox": 0,
+    "in_bbox": 2134784,
+    "before_dedup": 2134784,
+    "clean": 2134784,
+    "duplicates_removed": 0,
+    "confidence_filtered": 0,
+    "outliers_removed": 0,
+    "clean_rate_percent": 100.0
+  },
+  "funnel": [
+    {
+      "step": "read",
+      "label": "Baca raw",
+      "rows": 2134784,
+      "duration_ms": 11439,
+      "note": "2 pola input"
+    },
+    {
+      "step": "nulls",
+      "label": "Tangani nilai kosong",
+      "rows": 2134784,
+      "duration_ms": 7289,
+      "note": "constant; diisi 0"
+    },
+    {
+      "step": "valid",
+      "label": "Koordinat & waktu valid",
+      "rows": 2134784,
+      "duration_ms": 7813,
+      "note": "0 dibuang"
+    },
+    {
+      "step": "bbox",
+      "label": "Filter bbox Indonesia",
+      "rows": 2134784,
+      "duration_ms": 6904,
+      "note": "0 di luar bbox"
+    },
+    {
+      "step": "confidence",
+      "label": "Filter confidence minimum",
+      "rows": 2134784,
+      "duration_ms": 6956,
+      "note": "min=low (0 dibuang)"
+    },
+    {
+      "step": "outliers",
+      "label": "Filter outlier",
+      "rows": 2134784,
+      "duration_ms": 29931,
+      "note": "none pada frp (0 dibuang)"
+    },
+    {
+      "step": "normalize",
+      "label": "Normalisasi",
+      "rows": 2134784,
+      "duration_ms": 747,
+      "note": "metode=minmax"
+    },
+    {
+      "step": "dedup",
+      "label": "Deduplikasi",
+      "rows": 2134784,
+      "duration_ms": 3835,
+      "note": "0 dibuang"
+    }
+  ],
+  "durations_ms": {
+    "normalize": 1265,
+    "province": 938,
+    "write": 24568
+  },
+  "null_handling": {
+    "strategy": "constant",
+    "filled": {
+      "frp": 0,
+      "brightness": 0,
+      "confidence_score": 0
+    }
+  },
+  "normalization": {
+    "method": "minmax",
+    "params": {
+      "frp_min": 0.0,
+      "frp_max": 6647.6,
+      "frp_avg": 11.000473,
+      "frp_sd": 27.730417,
+      "brightness_min": 207.38,
+      "brightness_max": 505.5,
+      "brightness_avg": 328.760829,
+      "brightness_sd": 16.849959
+    }
+  },
+  "provinces": {
+    "Kalimantan Tengah": 381293,
+    "Kalimantan Barat": 274195,
+    "Sumatera Selatan": 183994,
+    "Papua Selatan": 164072,
+    "Nusa Tenggara Timur": 148401,
+    "Kalimantan Timur": 117643,
+    "Kalimantan Selatan": 88853,
+    "Riau": 77179,
+    "Nusa Tenggara Barat": 62590,
+    "Jawa Timur": 62380,
+    "Jambi": 61112,
+    "Sulawesi Tengah": 50368,
+    "Maluku": 50151,
+    "Sulawesi Selatan": 47098,
+    "Sulawesi Tenggara": 45416,
+    "Maluku Utara": 35207,
+    "Lampung": 34050,
+    "Kepulauan Bangka Belitung": 31776,
+    "Jawa Tengah": 21854,
+    "Papua Barat": 19195,
+    "Sumatera Utara": 18926,
+    "Jawa Barat": 18441,
+    "Sumatera Barat": 17515,
+    "Aceh": 16372,
+    "Kalimantan Utara": 15845,
+    "Sulawesi Utara": 12822,
+    "Kepulauan Riau": 9463,
+    "Gorontalo": 9394,
+    "Banten": 9372,
+    "Papua Pegunungan": 9114,
+    "Bengkulu": 8314,
+    "Papua Tengah": 7676,
+    "Sulawesi Barat": 7518,
+    "Papua": 5915,
+    "Papua Barat Daya": 5018,
+    "UNKNOWN": 4288,
+    "Bali": 1225,
+    "Daerah Khusus Ibukota Jakarta": 415,
+    "Daerah Istimewa Yogyakarta": 324
+  },
+  "sensors": [
+    {
+      "instrument": "VIIRS",
+      "satellite": "SNPP",
+      "count": 1734059
+    },
+    {
+      "instrument": "VIIRS",
+      "satellite": "NOAA-20",
+      "count": 14078
+    },
+    {
+      "instrument": "MODIS",
+      "satellite": "Aqua",
+      "count": 233214
+    },
+    {
+      "instrument": "VIIRS",
+      "satellite": "NOAA-21",
+      "count": 14520
+    },
+    {
+      "instrument": "MODIS",
+      "satellite": "Terra",
+      "count": 138913
+    }
+  ],
+  "schema": [
+    [
+      "latitude",
+      "double"
+    ],
+    [
+      "longitude",
+      "double"
+    ],
+    [
+      "acq_ts_utc",
+      "timestamp"
+    ],
+    [
+      "acq_ts_wib",
+      "timestamp"
+    ],
+    [
+      "year",
+      "int"
+    ],
+    [
+      "month",
+      "int"
+    ],
+    [
+      "day",
+      "int"
+    ],
+    [
+      "dayofyear",
+      "int"
+    ],
+    [
+      "hour",
+      "int"
+    ],
+    [
+      "satellite",
+      "string"
+    ],
+    [
+      "instrument",
+      "string"
+    ],
+    [
+      "confidence_level",
+      "string"
+    ],
+    [
+      "confidence_score",
+      "double"
+    ],
+    [
+      "brightness",
+      "double"
+    ],
+    [
+      "brightness_2",
+      "double"
+    ],
+    [
+      "frp",
+      "double"
+    ],
+    [
+      "daynight",
+      "string"
+    ],
+    [
+      "type",
+      "int"
+    ],
+    [
+      "grid_lat",
+      "double"
+    ],
+    [
+      "grid_lon",
+      "double"
+    ],
+    [
+      "grid_id",
+      "string"
+    ],
+    [
+      "province",
+      "string"
+    ],
+    [
+      "frp_norm",
+      "double"
+    ],
+    [
+      "brightness_norm",
+      "double"
+    ],
+    [
+      "source_file",
+      "string"
+    ],
+    [
+      "ingest_path",
+      "string"
+    ],
+    [
+      "acq_date",
+      "date"
+    ],
+    [
+      "acq_time",
+      "string"
+    ]
+  ]
+}

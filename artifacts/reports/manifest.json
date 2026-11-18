@@ -1,0 +1,16 @@
+{
+  "dataset": "PantauApi - hotspot FIRMS Indonesia",
+  "clean_rows": 2134784,
+  "history": "2019-01-01 s/d 2026-11-16 (per pipeline_run_summary.json)",
+  "full_data_location": "HDFS /karhutla/clean/hotspot + C:/karhutla-data/serving (tidak di Git)",
+  "samples": [
+    "agg_daily_grid_sample.csv",
+    "agg_daily_province_sample.csv",
+    "era5_sample.csv",
+    "firms_modis_sample.csv",
+    "firms_viirs_sample.csv",
+    "hotspot_latest_sample.csv",
+    "sipongi_reference_sample.csv"
+  ],
+  "notes": "Sampel 1.000 baris per tabel, hanya untuk inspeksi cepat di GitHub."
+}

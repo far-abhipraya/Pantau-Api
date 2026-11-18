@@ -1,0 +1,43 @@
+{
+  "job_id": "aggregate-2026-11-16b",
+  "computed_at": "2026-11-16T16:43:50+00:00",
+  "started_at": "2026-11-16T16:42:42+00:00",
+  "source_rows": 2134784,
+  "max_acq_ts": "2026-11-16T12:16:00+00:00",
+  "windows_hours": [
+    24,
+    48,
+    168
+  ],
+  "resolutions": [
+    1.0,
+    0.5,
+    0.25
+  ],
+  "tables": {
+    "hotspot_latest": {
+      "rows": 13451,
+      "path": "C:\\karhutla-data\\serving\\hotspot_latest"
+    },
+    "grid_latest_1_0": {
+      "rows": 591,
+      "path": "C:\\karhutla-data\\serving\\grid_latest_1_0"
+    },
+    "grid_latest_0_5": {
+      "rows": 1158,
+      "path": "C:\\karhutla-data\\serving\\grid_latest_0_5"
+    },
+    "grid_latest_0_25": {
+      "rows": 2104,
+      "path": "C:\\karhutla-data\\serving\\grid_latest_0_25"
+    },
+    "agg_daily_grid": {
+      "rows": 308719,
+      "path": "C:\\karhutla-data\\serving\\agg_daily_grid"
+    },
+    "agg_daily_province": {
+      "rows": 64115,
+      "path": "C:\\karhutla-data\\serving\\agg_daily_province"
+    }
+  }
+}

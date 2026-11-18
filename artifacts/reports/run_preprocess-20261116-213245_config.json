@@ -1,0 +1,27 @@
+{
+  "job_id": "preprocess-20261116-213245",
+  "config": {
+    "cleaning": {
+      "drop_duplicates": true,
+      "filter_bbox": true,
+      "min_confidence": "high",
+      "null_strategy": "constant",
+      "null_constant": 0.0,
+      "outlier_method": "none",
+      "outlier_column": "frp",
+      "outlier_threshold": 1.5
+    },
+    "transform": {
+      "time_parts": true
+    },
+    "normalization": {
+      "method": "minmax"
+    },
+    "spatial": {
+      "grid_id": true,
+      "province": true
+    },
+    "inputs": null,
+    "output": "/karhutla/clean/hotspot_test_config"
+  }
+}

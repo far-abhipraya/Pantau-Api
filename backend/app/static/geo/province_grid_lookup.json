@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-11-16T15:40:30.993682+00:00",
+  "source_geojson": "C:\\projects\\karhutla-watch\\backend\\app\\static\\geo\\provinces.geojson",
+  "step_degrees": 0.02,
+  "cells_tested": 1955000,
+  "cells_with_province": 403595,
+  "provinces": 38,
+  "elapsed_seconds": 176.99
+}

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-muted":"#F5EFE9","on-surface":"#221a14","secondary":"#a14000","risk-medium":"#FD7E14","primary-fixed":"#ffdbd0","surface-container-low":"#fff1e9","on-tertiary":"#ffffff","on-secondary-container":"#571f00","on-tertiary-fixed":"#001f26","status-info":"#1C7ED6","text-subtle":"#8F8279","primary-fixed-dim":"#ffb59e","text-main":"#1F1A17","tertiary-fixed":"#abedff","surface-bright":"#fff8f5","weather-teal":"#0B7285","fire-tint":"#FFF1E6","outline-variant":"#e3bfb4","fire-orange":"#F76707","background":"#fff8f5","surface-tint":"#ad3300","on-surface-variant":"#5a4139","on-primary-fixed-variant":"#842500","on-tertiary-container":"#f9fdff","fire-crimson":"#9F1D1D","secondary-fixed":"#ffdbcc","surface-container-highest":"#f0dfd5","secondary-container":"#fd6b0f","on-primary-fixed":"#390b00","status-danger":"#C92A2A","surface":"#FFFFFF","error-container":"#ffdad6","error":"#ba1a1a","outline":"#8e7067","inverse-on-surface":"#ffede3","tertiary-fixed-dim":"#82d2e7","inverse-surface":"#382f28","on-secondary-fixed":"#351000","border-warm":"#E8DFD6","on-primary":"#ffffff","conf-nominal":"#F76707","on-secondary":"#ffffff","on-error":"#ffffff","fire-deep-orange":"#D9480F","primary-container":"#d14307","inverse-primary":"#ffb59e","conf-high":"#B71C1C","risk-low":"#FCC419","fire-tint-strong":"#FFD8BF","surface-container-lowest":"#ffffff","fire-red":"#C92A2A","status-warning":"#E67700","risk-very-high":"#7A0C1E","secondary-fixed-dim":"#ffb694","ember-text-muted":"#D9B8AC","conf-low":"#FFC078","primary":"#a93200","surface-container":"#fcebe0","tertiary-container":"#247f92","text-muted":"#6B5F57","ember-surface":"#3B1814","surface-container-high":"#f6e5db","ember":"#2A1210","risk-high":"#E03131","on-primary-container":"#fffbff","ember-text":"#FBEFE9","on-background":"#221a14","on-error-container":"#93000a","tertiary":"#006577","on-secondary-fixed-variant":"#7b2f00","surface-dim":"#e7d7cd","bg-base":"#FBF8F5","surface-variant":"#f0dfd5","on-tertiary-fixed-variant":"#004e5c","status-success":"#2B8A3E"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-xxs":"0.25rem","space-md":"1rem","space-2xl":"3rem","gutter-md":"1.5rem","space-sm":"0.75rem","margin-lg":"2rem","margin-md":"1.5rem","space-xs":"0.5rem","gutter":"1rem","space-xl":"2rem","gutter-lg":"2rem","margin":"1rem","space-lg":"1.5rem"},"fontFamily":{"body-lg":["Inter"],"headline-md":["DM Sans"],"headline-lg":["DM Sans"],"label-md":["DM Sans"],"body-md":["Inter"],"headline-xl-mobile":["DM Sans"],"body-sm":["Inter"],"label-sm":["DM Sans"],"display-kpi":["DM Sans"],"headline-sm":["DM Sans"],"code-sm":["JetBrains Mono"],"headline-xl":["DM Sans"],"code-md":["JetBrains Mono"]},"fontSize":{"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["22px",{"lineHeight":"30px","letterSpacing":"-0.005em","fontWeight":"600"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.01em","fontWeight":"700"}],"label-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"headline-xl-mobile":["26px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"700"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"display-kpi":["36px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-sm":["18px",{"lineHeight":"26px","fontWeight":"600"}],"code-sm":["11px",{"lineHeight":"16px","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"700"}],"code-md":["13px",{"lineHeight":"18px","fontWeight":"400"}]}}}};</script></head><body class="bg-bg-base font-body-md text-body-md text-text-main antialiased relative min-h-screen selection:bg-fire-tint selection:text-fire-deep-orange"><header class="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-margin"><div class="mt-3 w-full max-w-[1120px] h-14 bg-surface rounded-full shadow-[0_8px_24px_rgba(31,26,23,0.12)] border border-border-warm px-5 flex items-center justify-between pointer-events-auto transition-opacity duration-200"><div class="flex items-center gap-3"><img alt="PantauApi Flame Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBD8agvUFlRsJu9RXlzL4KIeJCZlVEq8YLAo-11L0tEjUi2Ftc1dIZFT-tYyTwvQT6uSQnWx_xl2norWXOYiTI1IoxWlhYeFt7d64ANZ-vTYxqyObHIL0WTMbNkW6LYoN6yvzktJFNXgwxDACjr2gYVyjBDZGW7NpfksjIHgZ9ylcOoPAWkYTd6O1Yre94MoTBUaJs4P0U0mTYiQD7nLiShLtiWbLrzhma6YaGtDp8y"/><span class="font-headline-sm text-headline-sm font-bold text-text-main tracking-tight">PantauApi</span></div><nav class="flex items-center gap-1.5 p-1" data-active-classes="bg-fire-tint text-fire-deep-orange font-semibold rounded-full"><a class="px-4 py-1.5 rounded-full font-label-md text-label-md text-text-muted hover:text-text-main transition-colors duration-150" data-path="peta" href="#">Peta</a><a class="px-4 py-1.5 rounded-full font-label-md text-label-md text-text-muted hover:text-text-main transition-colors duration-150" data-path="data-pre-processing" href="#">Data &amp; Pre-processing</a><a aria-current="page" class="px-4 py-1.5 transition-colors duration-150 bg-fire-tint text-fire-deep-orange font-semibold rounded-full" data-path="analitik" href="#">Analitik</a></nav><div class="flex items-center gap-3"><div class="hidden sm:flex items-center gap-2 bg-surface-muted text-text-muted rounded-full px-3 py-1 font-label-sm text-label-sm border border-border-warm"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span></span><span>Diperbarui 14:05 WIB</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full min-h-screen pt-14 bg-bg-base relative"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1200px] mx-auto px-margin-md sm:px-margin-lg py-6 space-y-6">
+<!-- 1. Hero KPI Gelap (Ember #2A1210 to #3B1814) -->
+<div class="w-full bg-gradient-to-br from-ember via-[#2A1210] to-ember-surface rounded-2xl p-5 md:p-6 shadow-md relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-fire-orange/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-5">
+<div class="flex items-center gap-2.5">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-ember-surface text-fire-orange">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</span>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-ember-text tracking-tight">Telemetri &amp; Analitik Karhutla</h1>
+<p class="font-body-sm text-body-sm text-ember-text-muted">Pemantauan lintas satelit VIIRS/MODIS &amp; asimilasi iklim reanalisis</p>
+</div>
+</div>
+<div class="flex items-center gap-2 self-start md:self-auto">
+<span class="font-code-sm text-code-sm bg-ember-surface text-ember-text-muted px-2.5 py-1 rounded-md">Engine: DuckDB OLAP v1.1.0</span>
+<span class="flex items-center gap-1.5 bg-status-success/20 text-emerald-300 font-label-sm text-label-sm px-2.5 py-1 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Siap Analisis
+          </span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 relative z-10">
+<!-- Hotspot Hari Ini -->
+<div class="bg-ember-surface/80 rounded-xl p-3.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ember-text-muted uppercase tracking-wider">Hotspot Hari Ini</span>
+<span class="inline-flex items-center gap-0.5 bg-fire-crimson/40 text-fire-tint-strong font-label-sm text-label-sm px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>+12%
+            </span>
+</div>
+<div class="mt-2 font-display-kpi text-display-kpi text-ember-text font-bold tracking-tight">7.491</div>
+<span class="font-body-sm text-body-sm text-ember-text-muted/80 mt-1">vs 6.688 kemarin</span>
+</div>
+<!-- 7 Hari Terakhir -->
+<div class="bg-ember-surface/80 rounded-xl p-3.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ember-text-muted uppercase tracking-wider">7 Hari Terakhir</span>
+<span class="inline-flex items-center gap-0.5 bg-fire-orange/30 text-fire-tint-strong font-label-sm text-label-sm px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>+5,2%
+            </span>
+</div>
+<div class="mt-2 font-display-kpi text-display-kpi text-ember-text font-bold tracking-tight">38.640</div>
+<span class="font-body-sm text-body-sm text-ember-text-muted/80 mt-1">vs 36.720 pekan lalu</span>
+</div>
+<!-- 30 Hari Terakhir -->
+<div class="bg-ember-surface/80 rounded-xl p-3.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ember-text-muted uppercase tracking-wider">30 Hari Terakhir</span>
+<span class="inline-flex items-center gap-0.5 bg-emerald-950/60 text-emerald-300 font-label-sm text-label-sm px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[12px]">trending_down</span>-8,4%
+            </span>
+</div>
+<div class="mt-2 font-display-kpi text-display-kpi text-ember-text font-bold tracking-tight">142.890</div>
+<span class="font-body-sm text-body-sm text-ember-text-muted/80 mt-1">Akumulasi berjalan</span>
+</div>
+<!-- Provinsi Tertinggi -->
+<div class="bg-ember-surface/80 rounded-xl p-3.5 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ember-text-muted uppercase tracking-wider">Provinsi Puncak</span>
+<span class="material-symbols-outlined text-fire-orange text-[16px]">location_on</span>
+</div>
+<div class="mt-2">
+<div class="font-headline-sm text-headline-sm text-ember-text font-bold leading-tight line-clamp-1">Sumatera Selatan</div>
+<div class="font-code-md text-code-md text-fire-orange font-semibold mt-0.5">1.842 titik</div>
+</div>
+<span class="font-body-sm text-body-sm text-ember-text-muted/80 mt-1">24,5% dari total harian</span>
+</div>
+<!-- Rata-rata FRP -->
+<div class="bg-ember-surface/80 rounded-xl p-3.5 flex flex-col justify-between col-span-2 md:col-span-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-ember-text-muted uppercase tracking-wider">Rata-rata FRP</span>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-risk-medium/30 text-fire-tint font-label-sm text-label-sm">Sedang-Tinggi</span>
+</div>
+<div class="mt-2 font-display-kpi text-display-kpi text-ember-text font-bold tracking-tight">64,8 <span class="font-label-md text-label-md font-normal text-ember-text-muted">MW</span></div>
+<span class="font-body-sm text-body-sm text-ember-text-muted/80 mt-1">Maks: 412,4 MW (OKI)</span>
+</div>
+</div>
+</div>
+<!-- 2. Sticky / Bilah Filter Lengket & Navigasi Cepat -->
+<div class="sticky top-20 z-40 bg-surface rounded-xl shadow-md p-3.5 transition-all">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+<!-- Filter Controls -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-text-main">
+<!-- Date Range -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-muted rounded-lg font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-text-muted">calendar_today</span>
+<select class="bg-transparent text-text-main font-label-sm text-label-sm focus:outline-none cursor-pointer w-full">
+<option selected="">16 Feb 2026 - 16 Mar 2026</option>
+<option>1 Bulan Terakhir</option>
+<option>YTD (Jan - Mar 2026)</option>
+<option>Tahun Penuh 2025</option>
+</select>
+</div>
+<!-- Province Filter -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-muted rounded-lg font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-text-muted">map</span>
+<select class="bg-transparent text-text-main font-label-sm text-label-sm focus:outline-none cursor-pointer w-full">
+<option selected="">Semua Provinsi (38)</option>
+<option>Sumatera Selatan</option>
+<option>Kalimantan Tengah</option>
+<option>Riau</option>
+<option>Jambi</option>
+<option>Kalimantan Barat</option>
+</select>
+</div>
+<!-- Sensor Filter -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-muted rounded-lg font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-text-muted">satellite_alt</span>
+<select class="bg-transparent text-text-main font-label-sm text-label-sm focus:outline-none cursor-pointer w-full">
+<option selected="">VIIRS (SNPP/NOAA-20) + MODIS</option>
+<option>Hanya VIIRS (375m)</option>
+<option>Hanya MODIS (1km)</option>
+</select>
+</div>
+<!-- Confidence Filter -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-surface-muted rounded-lg font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-text-muted">verified</span>
+<select class="bg-transparent text-text-main font-label-sm text-label-sm focus:outline-none cursor-pointer w-full">
+<option selected="">Nominal+ (&gt;50%)</option>
+<option>Tinggi Sahaja (&gt;80%)</option>
+<option>Semua (Termasuk Rendah)</option>
+</select>
+</div>
+</div>
+<!-- Sync Button & Time -->
+<div class="flex items-center justify-between lg:justify-end gap-3 pt-2 lg:pt-0">
+<span class="font-code-sm text-code-sm text-text-muted hidden sm:inline">Sinkronisasi: 14:05 WIB</span>
+<button class="h-9 px-3.5 rounded-lg bg-surface-muted hover:bg-fire-tint text-text-main hover:text-fire-deep-orange font-label-sm text-label-sm flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span>Perbarui Analitik</span>
+</button>
+</div>
+</div>
+<!-- Quick Nav Tabs -->
+<div class="flex items-center gap-1 overflow-x-auto pt-3 mt-2 text-text-muted scrollbar-none">
+<a class="px-3 py-1 font-label-sm text-label-sm text-fire-deep-orange font-semibold bg-fire-tint rounded-full whitespace-nowrap" href="#ringkasan">Ringkasan Tren</a>
+<a class="px-3 py-1 font-label-sm text-label-sm hover:text-text-main hover:bg-surface-muted rounded-full whitespace-nowrap transition-colors" href="#wilayah">Analisis Spasial</a>
+<a class="px-3 py-1 font-label-sm text-label-sm hover:text-text-main hover:bg-surface-muted rounded-full whitespace-nowrap transition-colors" href="#musiman">Matriks Musiman</a>
+<a class="px-3 py-1 font-label-sm text-label-sm hover:text-text-main hover:bg-surface-muted rounded-full whitespace-nowrap transition-colors" href="#cuaca">Korelasi Cuaca</a>
+<a class="px-3 py-1 font-label-sm text-label-sm hover:text-text-main hover:bg-surface-muted rounded-full whitespace-nowrap transition-colors" href="#prediksi">Prediksi ML 7 Hari</a>
+<a class="px-3 py-1 font-label-sm text-label-sm hover:text-text-main hover:bg-surface-muted rounded-full whitespace-nowrap transition-colors" href="#validasi">Validasi Rekapitulasi</a>
+</div>
+</div>
+<!-- 3. Section 1: Ringkasan Tren Hotspot -->
+<section class="space-y-4" id="ringkasan">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-main">Ringkasan Tren Temporal</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Dinamika volume hotspot terdeteksi harian dan perbandingan historis tahun ke tahun</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Card 1: Daily Line Chart (8 cols) -->
+<div class="lg:col-span-8 bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-text-main">Fluktuasi Hotspot Harian</span>
+<span class="font-code-sm text-code-sm bg-fire-tint text-fire-deep-orange px-2 py-0.5 rounded font-medium">30 Hari</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="inline-flex p-0.5 bg-surface-muted rounded-lg font-label-sm text-label-sm">
+<button class="px-2.5 py-1 bg-surface rounded-md shadow-xs text-text-main font-semibold">Harian</button>
+<button class="px-2.5 py-1 text-text-muted hover:text-text-main">Bulanan</button>
+</div>
+<button class="p-1.5 bg-surface-muted hover:bg-fire-tint rounded-lg text-text-muted hover:text-fire-deep-orange transition-colors" title="Ekspor CSV/PNG">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+<!-- SVG Line Chart with Reference Line & Gradient -->
+<div class="w-full h-64 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 700 240">
+<defs>
+<lineargradient id="fireGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#D9480F" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#F76707" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid lines -->
+<line stroke="#E8DFD6" stroke-width="1" x1="30" x2="690" y1="20" y2="20"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="30" x2="690" y1="70" y2="70"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="30" x2="690" y1="120" y2="120"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="30" x2="690" y1="170" y2="170"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="30" x2="690" y1="210" y2="210"></line>
+<!-- Dotted Reference line: Average 1.280 -->
+<line stroke="#8F8279" stroke-dasharray="4 4" stroke-width="1.5" x1="30" x2="690" y1="135" y2="135"></line>
+<text fill="#8F8279" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="690" y="130">Rata-rata: 1.280 titik/hari</text>
+<!-- Y Axis labels -->
+<text fill="#8F8279" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="25" y="24">8k</text>
+<text fill="#8F8279" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="25" y="74">6k</text>
+<text fill="#8F8279" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="25" y="124">4k</text>
+<text fill="#8F8279" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="25" y="174">2k</text>
+<!-- Filled Area -->
+<polygon fill="url(#fireGrad)" points="
+                30,195 52,190 74,185 96,170 118,175 140,160 162,155 184,140 206,145 228,130 
+                250,135 272,120 294,115 316,95 338,105 360,85 382,90 404,70 426,80 448,65 
+                470,75 492,60 514,55 536,45 558,50 580,40 602,35 624,42 646,30 668,25 690,28
+                690,210 30,210"></polygon>
+<!-- Trend Line -->
+<polyline fill="none" points="
+                30,195 52,190 74,185 96,170 118,175 140,160 162,155 184,140 206,145 228,130 
+                250,135 272,120 294,115 316,95 338,105 360,85 382,90 404,70 426,80 448,65 
+                470,75 492,60 514,55 536,45 558,50 580,40 602,35 624,42 646,30 668,25 690,28" stroke="#D9480F" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></polyline>
+<!-- Peak indicator dot (Hari Ini) -->
+<circle cx="668" cy="25" fill="#C92A2A" r="5" stroke="#FFFFFF" stroke-width="2"></circle>
+</svg>
+<!-- Tooltip simulation on peak -->
+<div class="absolute right-4 top-2 bg-ember text-ember-text p-2 rounded-lg shadow-lg pointer-events-none text-left">
+<div class="font-code-sm text-code-sm text-ember-text-muted">16 Mar 2026 (Hari ini)</div>
+<div class="font-label-md text-label-md font-bold text-fire-orange">7.491 Hotspot</div>
+<div class="font-code-sm text-code-sm text-ember-text-muted">FRP Rata2: 64,8 MW</div>
+</div>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm text-text-muted pt-2">
+<span>16 Feb 2026</span>
+<span>26 Feb</span>
+<span>07 Mar</span>
+<span class="text-fire-deep-orange font-semibold">16 Mar 2026</span>
+</div>
+</div>
+<!-- Card 2: YoY Bar Chart (4 cols) -->
+<div class="lg:col-span-4 bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-headline-sm text-headline-sm text-text-main">Perbandingan Tahunan</span>
+<span class="font-label-sm text-label-sm text-text-muted">Jan - Mar YTD</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mb-4">Total hotspot terakumulasi pada kuartal pertama selama 3 tahun terakhir.</p>
+<div class="space-y-4">
+<!-- 2024 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-muted font-code-sm">2024 (Baseline Basah)</span>
+<span class="font-semibold text-text-main">84.120</span>
+</div>
+<div class="w-full bg-surface-muted h-3 rounded-full overflow-hidden">
+<div class="bg-outline/60 h-full rounded-full" style="width: 58%;"></div>
+</div>
+</div>
+<!-- 2025 -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-muted font-code-sm">2025 (El Nino Moderat)</span>
+<span class="font-semibold text-text-main">122.450</span>
+</div>
+<div class="w-full bg-surface-muted h-3 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 85%;"></div>
+</div>
+</div>
+<!-- 2026 YTD -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-fire-deep-orange font-bold font-code-sm">2026 YTD (Aktif)</span>
+<span class="font-bold text-fire-crimson">142.890</span>
+</div>
+<div class="w-full bg-surface-muted h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-fire-orange to-fire-red h-full rounded-full" style="width: 100%;"></div>
+</div>
+<div class="mt-1 flex items-center justify-between text-[11px] text-fire-deep-orange font-code-sm">
+<span>+16,7% vs 2025</span>
+<span>+69,8% vs 2024</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 p-3 bg-surface-muted rounded-lg font-body-sm text-body-sm text-text-muted flex items-start gap-2">
+<span class="material-symbols-outlined text-[18px] text-status-warning shrink-0 mt-0.5">warning</span>
+<span>Aktivitas kuartal 1 2026 melampaui fase awal 2025 menyusul awal musim kemarau lebih cepat di pesisir timur Sumatera.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Section 2: Analisis Spasial & Wilayah -->
+<section class="space-y-4" id="wilayah">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-main">Analisis Spasial &amp; Konsentrasi Wilayah</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Peringkat provinsi terdampak dan resolusi klaster sel grid 0.25° (~27.5 km)</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Peringkat Provinsi (Horizontal Bar Chart, 5 cols) -->
+<div class="lg:col-span-5 bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="font-headline-sm text-headline-sm text-text-main">Peringkat Hotspot Provinsi</span>
+<span class="font-code-sm text-code-sm text-text-muted">24 Jam Terakhir</span>
+</div>
+<div class="space-y-3.5">
+<!-- Sumsel -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="font-semibold text-text-main">1. Sumatera Selatan</span>
+<span class="font-code-sm font-bold text-fire-crimson">1.842</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-fire-red h-full rounded-full" style="width: 100%;"></div>
+</div>
+</div>
+<!-- Kalteng -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="font-medium text-text-main">2. Kalimantan Tengah</span>
+<span class="font-code-sm font-semibold text-fire-deep-orange">1.410</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-fire-deep-orange h-full rounded-full" style="width: 76.5%;"></div>
+</div>
+</div>
+<!-- Riau -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="font-medium text-text-main">3. Riau</span>
+<span class="font-code-sm font-semibold text-fire-orange">980</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-fire-orange h-full rounded-full" style="width: 53.2%;"></div>
+</div>
+</div>
+<!-- Jambi -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="font-medium text-text-main">4. Jambi</span>
+<span class="font-code-sm text-text-main">765</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 41.5%;"></div>
+</div>
+</div>
+<!-- Kalbar -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="font-medium text-text-main">5. Kalimantan Barat</span>
+<span class="font-code-sm text-text-main">620</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-risk-medium h-full rounded-full" style="width: 33.6%;"></div>
+</div>
+</div>
+<!-- Kalsel -->
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="font-medium text-text-main">6. Kalimantan Selatan</span>
+<span class="font-code-sm text-text-main">415</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-risk-low h-full rounded-full" style="width: 22.5%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 flex items-center justify-between text-text-muted font-body-sm text-body-sm">
+<span>6 Provinsi mencakup 80,5% total kejadian</span>
+<a class="text-fire-deep-orange hover:underline font-label-sm" href="#">Detail 38 Prov →</a>
+</div>
+</div>
+<!-- Tabel Top Grid Spasial 0.25 (7 cols) -->
+<div class="lg:col-span-7 bg-surface rounded-xl p-5 shadow-sm overflow-hidden flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div>
+<span class="font-headline-sm text-headline-sm text-text-main">Top Klaster Sel Grid 0.25°</span>
+<span class="block font-body-sm text-body-sm text-text-muted">Resolusi asimilasi model ML &amp; indeks intensitas</span>
+</div>
+<span class="font-code-sm text-code-sm bg-surface-muted px-2.5 py-1 rounded text-text-subtle">Aggregat 24 Jam</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="bg-surface-muted text-text-muted font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-2 px-3 rounded-l-lg">Grid ID</th>
+<th class="py-2 px-2">Koordinat</th>
+<th class="py-2 px-2">Kabupaten / Prov</th>
+<th class="py-2 px-2 text-right">Titik 24j</th>
+<th class="py-2 px-2 text-right">FRP Rata2</th>
+<th class="py-2 px-3 text-right rounded-r-lg">Status Risiko</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-warm">
+<tr class="hover:bg-fire-tint/40 transition-colors">
+<td class="py-2.5 px-3 font-code-sm font-semibold text-text-main">GRID-SS-0842</td>
+<td class="py-2.5 px-2 font-code-sm text-text-subtle">-3.25, 105.00</td>
+<td class="py-2.5 px-2 text-text-main">Ogan Komering Ilir, SS</td>
+<td class="py-2.5 px-2 font-code-sm text-right font-bold text-fire-crimson">412</td>
+<td class="py-2.5 px-2 font-code-sm text-right">88.4 MW</td>
+<td class="py-2.5 px-3 text-right">
+<span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-risk-very-high text-white">Sangat Tinggi</span>
+</td>
+</tr>
+<tr class="hover:bg-fire-tint/40 transition-colors">
+<td class="py-2.5 px-3 font-code-sm font-semibold text-text-main">GRID-KT-1102</td>
+<td class="py-2.5 px-2 font-code-sm text-text-subtle">-2.50, 113.75</td>
+<td class="py-2.5 px-2 text-text-main">Pulang Pisau, KT</td>
+<td class="py-2.5 px-2 font-code-sm text-right font-bold text-fire-deep-orange">295</td>
+<td class="py-2.5 px-2 font-code-sm text-right">72.1 MW</td>
+<td class="py-2.5 px-3 text-right">
+<span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-risk-high text-white">Tinggi</span>
+</td>
+</tr>
+<tr class="hover:bg-fire-tint/40 transition-colors">
+<td class="py-2.5 px-3 font-code-sm font-semibold text-text-main">GRID-RI-0319</td>
+<td class="py-2.5 px-2 font-code-sm text-text-subtle">1.50, 101.75</td>
+<td class="py-2.5 px-2 text-text-main">Bengkalis, Riau</td>
+<td class="py-2.5 px-2 font-code-sm text-right font-bold text-fire-orange">184</td>
+<td class="py-2.5 px-2 font-code-sm text-right">54.6 MW</td>
+<td class="py-2.5 px-3 text-right">
+<span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-risk-high text-white">Tinggi</span>
+</td>
+</tr>
+<tr class="hover:bg-fire-tint/40 transition-colors">
+<td class="py-2.5 px-3 font-code-sm font-semibold text-text-main">GRID-JB-0588</td>
+<td class="py-2.5 px-2 font-code-sm text-text-subtle">-1.25, 103.50</td>
+<td class="py-2.5 px-2 text-text-main">Muaro Jambi, JB</td>
+<td class="py-2.5 px-2 font-code-sm text-right font-bold text-text-main">142</td>
+<td class="py-2.5 px-2 font-code-sm text-right">43.0 MW</td>
+<td class="py-2.5 px-3 text-right">
+<span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-risk-medium text-white">Sedang</span>
+</td>
+</tr>
+<tr class="hover:bg-fire-tint/40 transition-colors">
+<td class="py-2.5 px-3 font-code-sm font-semibold text-text-main">GRID-KB-0914</td>
+<td class="py-2.5 px-2 font-code-sm text-text-subtle">-0.25, 109.50</td>
+<td class="py-2.5 px-2 text-text-main">Kubu Raya, KB</td>
+<td class="py-2.5 px-2 font-code-sm text-right font-bold text-text-main">118</td>
+<td class="py-2.5 px-2 font-code-sm text-right">38.2 MW</td>
+<td class="py-2.5 px-3 text-right">
+<span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-risk-medium text-white">Sedang</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between font-code-sm text-code-sm text-text-muted">
+<span>Format bounding box: EPSG:4326 (WGS 84)</span>
+<span>Total 182 grid sel aktif</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Section 3: Analisis Musiman (Seasonality Matrix) -->
+<section class="space-y-4" id="musiman">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-main">Matriks Musiman Karhutla (2022 - 2026)</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Kepadatan hotspot historis per bulan menunjukkan jendela kritis musim kemarau (Agustus - Oktober)</p>
+</div>
+<div class="flex items-center gap-2 self-start sm:self-auto">
+<div class="inline-flex p-0.5 bg-surface rounded-lg shadow-xs font-label-sm text-label-sm">
+<button class="px-3 py-1 bg-surface-muted text-fire-deep-orange font-semibold rounded-md">Bulan x Tahun</button>
+<button class="px-3 py-1 text-text-muted hover:text-text-main">Bulan x Provinsi</button>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-5 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-center border-collapse">
+<thead>
+<tr class="font-label-sm text-label-sm text-text-muted">
+<th class="p-2 text-left w-20">Tahun</th>
+<th class="p-2">Jan</th>
+<th class="p-2">Feb</th>
+<th class="p-2">Mar</th>
+<th class="p-2">Apr</th>
+<th class="p-2">Mei</th>
+<th class="p-2">Jun</th>
+<th class="p-2">Jul</th>
+<th class="p-2 text-fire-crimson font-bold">Agu</th>
+<th class="p-2 text-fire-crimson font-bold">Sep</th>
+<th class="p-2 text-fire-crimson font-bold">Okt</th>
+<th class="p-2">Nov</th>
+<th class="p-2">Des</th>
+</tr>
+</thead>
+<tbody class="font-code-sm text-code-sm">
+<!-- 2022 (La Nina basah) -->
+<tr class="border-t border-border-warm">
+<td class="p-2 text-left font-bold text-text-main">2022</td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">210</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">340</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">450</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">280</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/40 text-text-main">710</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/50 text-text-main">890</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/40 text-text-main">1.450</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/70 text-text-main">2.310</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high/40 text-text-main">3.120</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/40 text-text-main">1.620</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">410</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">190</div></td>
+</tr>
+<!-- 2023 (El Nino kuat) -->
+<tr class="border-t border-border-warm">
+<td class="p-2 text-left font-bold text-text-main">2023</td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">380</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/40 text-text-main">620</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/50 text-text-main">910</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/50 text-text-main">1.840</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/80 text-text-main">2.950</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high/60 text-white font-semibold">5.400</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high text-white font-semibold">14.200</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-very-high text-white font-bold">38.900</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-very-high text-white font-bold">54.120</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-very-high text-white font-bold">29.400</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/60 text-text-main">2.810</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">540</div></td>
+</tr>
+<!-- 2024 -->
+<tr class="border-t border-border-warm">
+<td class="p-2 text-left font-bold text-text-main">2024</td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">410</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">520</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/40 text-text-main">740</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/50 text-text-main">920</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/40 text-text-main">1.340</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/60 text-text-main">2.410</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high/50 text-white font-medium">4.890</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high text-white font-bold">12.800</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high text-white font-bold">16.450</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/80 text-text-main">6.210</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">980</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">320</div></td>
+</tr>
+<!-- 2025 -->
+<tr class="border-t border-border-warm">
+<td class="p-2 text-left font-bold text-text-main">2025</td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/40 text-text-main">650</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/60 text-text-main">980</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/40 text-text-main">1.820</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/60 text-text-main">2.450</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/80 text-text-main">3.900</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high/60 text-white font-medium">6.780</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high text-white font-bold">18.400</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-very-high text-white font-bold">41.200</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-very-high text-white font-bold">36.800</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high text-white font-semibold">14.100</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/60 text-text-main">1.450</div></td>
+<td class="p-1"><div class="p-2 rounded bg-surface-muted text-text-muted">490</div></td>
+</tr>
+<!-- 2026 (Aktif) -->
+<tr class="border-t border-border-warm bg-fire-tint/20">
+<td class="p-2 text-left font-bold text-fire-deep-orange">2026*</td>
+<td class="p-1"><div class="p-2 rounded bg-risk-low/60 text-text-main font-semibold">890</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-medium/70 text-text-main font-semibold">2.840</div></td>
+<td class="p-1"><div class="p-2 rounded bg-risk-high/70 text-white font-bold">7.491</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+<td class="p-1"><div class="p-2 rounded border border-dashed border-border-warm text-text-subtle font-normal">-</div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Legend scale -->
+<div class="mt-4 pt-3 flex flex-wrap items-center justify-between gap-3 text-text-muted font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span>Skala Intensitas:</span>
+<div class="flex items-center gap-1">
+<span class="w-3.5 h-3.5 rounded bg-surface-muted inline-block" title="&lt; 500"></span>
+<span class="w-3.5 h-3.5 rounded bg-risk-low/60 inline-block" title="500 - 1.500"></span>
+<span class="w-3.5 h-3.5 rounded bg-risk-medium inline-block" title="1.500 - 5.000"></span>
+<span class="w-3.5 h-3.5 rounded bg-risk-high inline-block" title="5.000 - 20.000"></span>
+<span class="w-3.5 h-3.5 rounded bg-risk-very-high inline-block" title="&gt; 20.000"></span>
+</div>
+<span class="font-code-sm text-code-sm text-text-subtle ml-1">&lt;500 s/d &gt;20.000 titik/bulan</span>
+</div>
+<span class="font-code-sm text-code-sm text-fire-deep-orange">*2026 data berjalan s/d 16 Maret</span>
+</div>
+</div>
+</section>
+<!-- 6. Section 4: Korelasi Cuaca & Atmosfer (CHIRPS & ERA5) -->
+<section class="space-y-4" id="cuaca">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-main">Korelasi Cuaca &amp; Indikator Atmosfer</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Interaksi curah hujan satelit CHIRPS, hari tanpa hujan (dry spell), dan kelembapan ERA5-Land</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Dual-Axis Chart: Hotspot vs CHIRPS Rain (8 cols) -->
+<div class="lg:col-span-8 bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between">
+<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+<div>
+<span class="font-headline-sm text-headline-sm text-text-main">Hotspot Harian vs Curah Hujan (CHIRPS)</span>
+<span class="block font-body-sm text-body-sm text-text-muted">Provinsi Sumatera Selatan (30 Hari Terakhir)</span>
+</div>
+<div class="flex items-center gap-3 font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-fire-orange inline-block"></span>Hotspot (Batang)</span>
+<span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-weather-teal inline-block"></span>Hujan mm/hari (Area)</span>
+</div>
+</div>
+<!-- Dual Axis SVG -->
+<div class="w-full h-64 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 680 240">
+<!-- CHIRPS Rain Area (Teal) -->
+<defs>
+<lineargradient id="rainGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#0B7285" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#0B7285" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<polygon fill="url(#rainGrad)" points="
+                30,40 60,35 90,60 120,95 150,140 180,180 210,195 240,205 270,210 300,210 
+                330,205 360,210 390,210 420,208 450,210 480,210 510,205 540,208 570,210 600,210 630,210 660,210
+                660,210 30,210"></polygon>
+<polyline fill="none" points="
+                30,40 60,35 90,60 120,95 150,140 180,180 210,195 240,205 270,210 300,210 
+                330,205 360,210 390,210 420,208 450,210 480,210 510,205 540,208 570,210 600,210 630,210 660,210" stroke="#0B7285" stroke-linecap="round" stroke-width="2"></polyline>
+<!-- Hotspot Bars (Fire Orange) Inverse Relationship -->
+<rect fill="#F76707" height="15" rx="2" width="8" x="35" y="195"></rect>
+<rect fill="#F76707" height="12" rx="2" width="8" x="65" y="198"></rect>
+<rect fill="#F76707" height="20" rx="2" width="8" x="95" y="190"></rect>
+<rect fill="#F76707" height="30" rx="2" width="8" x="125" y="180"></rect>
+<rect fill="#F76707" height="50" rx="2" width="8" x="155" y="160"></rect>
+<rect fill="#F76707" height="65" rx="2" width="8" x="185" y="145"></rect>
+<rect fill="#F76707" height="80" rx="2" width="8" x="215" y="130"></rect>
+<rect fill="#F76707" height="95" rx="2" width="8" x="245" y="115"></rect>
+<rect fill="#F76707" height="120" rx="2" width="8" x="275" y="90"></rect>
+<rect fill="#F76707" height="135" rx="2" width="8" x="305" y="75"></rect>
+<rect fill="#F76707" height="140" rx="2" width="8" x="335" y="70"></rect>
+<rect fill="#D9480F" height="150" rx="2" width="8" x="365" y="60"></rect>
+<rect fill="#D9480F" height="155" rx="2" width="8" x="395" y="55"></rect>
+<rect fill="#D9480F" height="165" rx="2" width="8" x="425" y="45"></rect>
+<rect fill="#D9480F" height="172" rx="2" width="8" x="455" y="38"></rect>
+<rect fill="#C92A2A" height="180" rx="2" width="8" x="485" y="30"></rect>
+<rect fill="#C92A2A" height="185" rx="2" width="8" x="515" y="25"></rect>
+<rect fill="#C92A2A" height="190" rx="2" width="8" x="545" y="20"></rect>
+<rect fill="#C92A2A" height="192" rx="2" width="8" x="575" y="18"></rect>
+<rect fill="#C92A2A" height="196" rx="2" width="8" x="605" y="14"></rect>
+<rect fill="#7A0C1E" height="200" rx="2" width="8" x="635" y="10"></rect>
+<!-- Axes -->
+<line stroke="#E8DFD6" stroke-width="1" x1="30" x2="660" y1="210" y2="210"></line>
+</svg>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm text-text-muted pt-2">
+<span>Hujan Tinggi (&gt;45 mm/hari) → Hotspot Nol</span>
+<span class="text-fire-crimson font-semibold">18 Hari Tanpa Hujan → Lonjakan 1.842 Hotspot</span>
+</div>
+</div>
+<!-- Side Widgets (4 cols) -->
+<div class="lg:col-span-4 space-y-4">
+<!-- Widget 1: Dry Spell -->
+<div class="bg-surface rounded-xl p-4 shadow-sm flex items-start gap-3">
+<div class="w-12 h-12 rounded-xl bg-risk-very-high/10 text-fire-crimson flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">water_drop</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Hari Kering Berturut-turut</span>
+<div class="font-display-kpi text-display-kpi text-fire-crimson font-bold">18 <span class="font-headline-sm text-headline-sm font-normal text-text-main">Hari</span></div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Kab. Ogan Komering Ilir (Ambang kritis kebakaran gambut &gt;10 hari)</p>
+</div>
+</div>
+<!-- Widget 2: Scatter / Korelasi Kelembapan -->
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-bold text-text-main">Kelembapan Udara vs Hotspot</span>
+<span class="font-code-sm text-code-sm bg-fire-tint text-fire-deep-orange px-2 py-0.5 rounded font-bold">r = -0.78</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mb-3">Korelasi negatif kuat: Penurunan RH &lt;65% memicu eskalasi eksponensial.</p>
+<!-- Mini Scatter Viz -->
+<div class="w-full h-24 bg-surface-muted rounded-lg p-2 relative flex items-end justify-between">
+<span class="absolute top-1 left-2 font-code-sm text-[10px] text-text-subtle">RH Rendah (40%)</span>
+<span class="absolute bottom-1 right-2 font-code-sm text-[10px] text-text-subtle">RH Tinggi (90%)</span>
+<!-- Sample scatter dots -->
+<div class="w-2.5 h-2.5 rounded-full bg-fire-crimson absolute" style="left: 15%; top: 20%;"></div>
+<div class="w-2 h-2 rounded-full bg-fire-deep-orange absolute" style="left: 22%; top: 28%;"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-fire-orange absolute" style="left: 30%; top: 38%;"></div>
+<div class="w-2 h-2 rounded-full bg-risk-medium absolute" style="left: 45%; top: 55%;"></div>
+<div class="w-2 h-2 rounded-full bg-weather-teal absolute" style="left: 65%; top: 75%;"></div>
+<div class="w-2 h-2 rounded-full bg-weather-teal absolute" style="left: 80%; top: 85%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. Section 5: Evaluasi Prediksi Risiko ML 7 Hari -->
+<section class="space-y-4" id="prediksi">
+<!-- Dark Ember Header -->
+<div class="w-full bg-ember rounded-xl p-5 text-ember-text flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md">
+<div class="flex items-center gap-3">
+<span class="p-2 bg-ember-surface rounded-lg text-fire-orange">
+<span class="material-symbols-outlined text-[24px]">model_training</span>
+</span>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm font-bold text-ember-text">Prediksi Risiko 7 Hari (Spark MLlib GBT &amp; RF)</h2>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-code-sm text-fire-deep-orange border border-fire-deep-orange">Prediksi</span>
+</div>
+<p class="font-body-sm text-body-sm text-ember-text-muted">Estimasi risiko berbasis Random Forest &amp; Gradient-Boosted Trees, bukan kepastian kejadian.</p>
+</div>
+</div>
+<div class="font-code-sm text-code-sm text-ember-text-muted bg-ember-surface px-3 py-1.5 rounded-lg self-start md:self-auto">
+          Model: risk_gbt_v1.2 | Dilatih: 10 Mar 2026 | Split: Time-based
+        </div>
+</div>
+<!-- ML Metrics Grid -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+<!-- AUC-ROC -->
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">AUC-ROC</span>
+<div class="font-display-kpi text-display-kpi text-text-main font-bold mt-1">0.892</div>
+<span class="font-code-sm text-code-sm text-status-success font-semibold flex items-center gap-0.5 mt-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>+0.18 vs persistensi (0.71)
+          </span>
+</div>
+<!-- AUC-PR -->
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">AUC-PR (Imbalanced)</span>
+<div class="font-display-kpi text-display-kpi text-text-main font-bold mt-1">0.764</div>
+<span class="font-code-sm text-code-sm text-status-success font-semibold flex items-center gap-0.5 mt-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>+0.24 vs baseline (0.52)
+          </span>
+</div>
+<!-- Precision -->
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Precision</span>
+<div class="font-display-kpi text-display-kpi text-text-main font-bold mt-1">78,4%</div>
+<span class="font-body-sm text-body-sm text-text-muted mt-1">Peringkat ambang risiko tinggi</span>
+</div>
+<!-- Recall -->
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Recall (Sensitivitas)</span>
+<div class="font-display-kpi text-display-kpi text-text-main font-bold mt-1">82,1%</div>
+<span class="font-body-sm text-body-sm text-text-muted mt-1">Hotspot aktual teridentifikasi</span>
+</div>
+<!-- F1-Score -->
+<div class="bg-surface rounded-xl p-4 shadow-sm col-span-2 md:col-span-1">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">F1-Score</span>
+<div class="font-display-kpi text-display-kpi text-fire-deep-orange font-bold mt-1">0.802</div>
+<span class="font-body-sm text-body-sm text-text-muted mt-1">Keseimbangan deteksi &amp; alarm</span>
+</div>
+</div>
+<!-- Feature Importance & Confusion Matrix -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Feature Importance Chart (8 cols) -->
+<div class="lg:col-span-8 bg-surface rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="font-headline-sm text-headline-sm text-text-main">Kepentingan Fitur (Feature Importance - GBT)</span>
+<span class="font-code-sm text-code-sm text-text-muted">Gini Impurity Metric</span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-main font-medium">Akumulasi FRP 7 Hari Terakhir</span>
+<span class="font-code-sm text-fire-deep-orange font-semibold">28,4%</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-fire-deep-orange h-full rounded-full" style="width: 28.4%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-main font-medium">Hari Kering Berturut-turut (Dry Spell - CHIRPS)</span>
+<span class="font-code-sm text-fire-orange font-semibold">22,1%</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-fire-orange h-full rounded-full" style="width: 22.1%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-main font-medium">Densitas Hotspot 8 Sel Tetangga Spasial</span>
+<span class="font-code-sm text-secondary-container font-semibold">18,6%</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 18.6%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-main font-medium">Suhu Permukaan Maksimum ERA5-Land (2m)</span>
+<span class="font-code-sm text-text-main">13,2%</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-risk-medium h-full rounded-full" style="width: 13.2%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-main font-medium">Kelembapan Relatif Udara (RH %)</span>
+<span class="font-code-sm text-text-main">10,5%</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-weather-teal h-full rounded-full" style="width: 10.5%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-1">
+<span class="text-text-main font-medium">Hari Sejak Titik Api Terakhir di Sel</span>
+<span class="font-code-sm text-text-muted">7,2%</span>
+</div>
+<div class="w-full bg-surface-muted h-2.5 rounded-full overflow-hidden">
+<div class="bg-outline/50 h-full rounded-full" style="width: 7.2%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Confusion Matrix (4 cols) -->
+<div class="lg:col-span-4 bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-headline-sm text-headline-sm text-text-main">Matriks Konfusi</span>
+<span class="font-code-sm text-code-sm text-text-muted">Test 2025-2026</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mb-4">Evaluasi klasifikasi biner pada ambang keputusan default 0.50</p>
+<div class="grid grid-cols-2 gap-2 text-center">
+<div class="bg-surface-muted p-3 rounded-lg">
+<span class="font-label-sm text-[11px] text-text-muted uppercase">True Positive (TP)</span>
+<div class="font-headline-sm text-headline-sm text-status-success font-bold mt-1">14.820</div>
+<span class="font-code-sm text-[11px] text-text-subtle">Hotspot diprediksi benar</span>
+</div>
+<div class="bg-surface-muted p-3 rounded-lg">
+<span class="font-label-sm text-[11px] text-text-muted uppercase">False Positive (FP)</span>
+<div class="font-headline-sm text-headline-sm text-risk-medium font-bold mt-1">4.080</div>
+<span class="font-code-sm text-[11px] text-text-subtle">Alarm palsu terpicu</span>
+</div>
+<div class="bg-surface-muted p-3 rounded-lg">
+<span class="font-label-sm text-[11px] text-text-muted uppercase">False Negative (FN)</span>
+<div class="font-headline-sm text-headline-sm text-status-danger font-bold mt-1">3.230</div>
+<span class="font-code-sm text-[11px] text-text-subtle">Hotspot luput terdeteksi</span>
+</div>
+<div class="bg-surface-muted p-3 rounded-lg">
+<span class="font-label-sm text-[11px] text-text-muted uppercase">True Negative (TN)</span>
+<div class="font-headline-sm text-headline-sm text-text-main font-bold mt-1">89.410</div>
+<span class="font-code-sm text-[11px] text-text-subtle">Aman terkonfirmasi</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 font-code-sm text-code-sm text-text-muted flex justify-between">
+<span>Spesifisitas: 95,6%</span>
+<span>Akurasi Global: 93,4%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 8. Section 6: Validasi Rekapitulasi (SiPongi+ & BNPB) -->
+<section class="space-y-4" id="validasi">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h2 class="font-headline-md text-headline-md text-text-main">Validasi &amp; Rekonsiliasi Data Resmi</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Perbandingan telemetri ingested PantauApi terhadap rilis berkala SiPongi+ (Kemenhut) dan BNPB</p>
+</div>
+<button class="h-9 px-3.5 rounded-lg bg-surface-muted hover:bg-surface text-text-main font-label-sm text-label-sm flex items-center gap-1.5 transition-colors self-start sm:self-auto shadow-xs">
+<span class="material-symbols-outlined text-[16px]">upload_file</span>
+<span>+ Unggah Rekap Pembanding</span>
+</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+<!-- Dual Line Validation Chart (8 cols) -->
+<div class="lg:col-span-8 bg-surface rounded-xl p-5 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<span class="font-headline-sm text-headline-sm text-text-main">Kesesuaian Volume Bulanan (2025 - 2026)</span>
+<div class="flex items-center gap-3 font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-fire-deep-orange inline-block"></span>PantauApi Telemetri</span>
+<span class="flex items-center gap-1.5"><span class="w-3 h-1 bg-outline inline-block stroke-dashed"></span>SiPongi+ / BNPB</span>
+</div>
+</div>
+<!-- Comparison SVG -->
+<div class="w-full h-56 relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 680 200">
+<!-- Grid -->
+<line stroke="#E8DFD6" stroke-width="1" x1="20" x2="660" y1="20" y2="20"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="20" x2="660" y1="70" y2="70"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="20" x2="660" y1="120" y2="120"></line>
+<line stroke="#E8DFD6" stroke-width="1" x1="20" x2="660" y1="170" y2="170"></line>
+<!-- SiPongi Line (Grey dashed) -->
+<polyline fill="none" points="
+                30,155 80,148 130,135 180,120 230,95 280,75 330,40 380,25 430,32 480,80 530,130 580,145 630,130" stroke="#8E7067" stroke-dasharray="5 4" stroke-width="2"></polyline>
+<!-- PantauApi Line (Orange solid) -->
+<polyline fill="none" points="
+                30,160 80,150 130,138 180,118 230,90 280,70 330,35 380,22 430,30 480,85 530,128 580,140 630,122" stroke="#D9480F" stroke-linecap="round" stroke-width="2.5"></polyline>
+<!-- Data markers -->
+<circle cx="380" cy="22" fill="#D9480F" r="4"></circle>
+<circle cx="380" cy="25" fill="#8E7067" r="3"></circle>
+</svg>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm text-text-muted pt-2">
+<span>Mar 2025</span>
+<span>Jun 2025</span>
+<span>Sep 2025 (Puncak)</span>
+<span>Des 2025</span>
+<span>Mar 2026</span>
+</div>
+</div>
+<!-- Validation Summary Metric Cards (4 cols) -->
+<div class="lg:col-span-4 space-y-4">
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Koefisien Korelasi Pearson</span>
+<div class="font-display-kpi text-display-kpi text-text-main font-bold mt-1">0.94</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">Kesesuaian sangat tinggi terhadap kurva temporal rujukan nasional.</p>
+</div>
+<div class="bg-surface rounded-xl p-4 shadow-sm">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Selisih Rata-rata (Mean Discrepancy)</span>
+<div class="font-display-kpi text-display-kpi text-fire-deep-orange font-bold mt-1">±4,8%</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-1">Perbedaan disebabkan latensi penarikan katalog FIRMS NRT vs QC resmi.</p>
+</div>
+<div class="p-3 bg-surface-muted rounded-xl font-body-sm text-body-sm text-text-muted flex items-start gap-2">
+<span class="material-symbols-outlined text-[18px] text-text-subtle shrink-0 mt-0.5">verified_user</span>
+<span>Data pembanding resmi disinkronkan dari SiPongi Kemenhut RI &amp; Pusdatin BNPB (Pembaruan bulanan).</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div></main><footer class="w-full bg-ember border-t border-ember-surface py-5 px-margin text-center z-10 relative text-ember-text"><div class="max-w-[1120px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3"><div class="flex items-center gap-2"><span class="font-headline-sm text-headline-sm font-bold text-ember-text">PantauApi</span><span class="font-body-sm text-body-sm text-ember-text-muted">— Platform Telemetri Karhutla Nasional</span></div><p class="font-body-sm text-body-sm text-ember-text-muted">Hotspot adalah indikasi anomali suhu satelit NASA FIRMS, bukan kepastian kebakaran. Peta: CARTO Positron.</p></div></footer></body></html>

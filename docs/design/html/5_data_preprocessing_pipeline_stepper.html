@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+
+<html lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-container":"#fd6b0f","surface-container-high":"#f6e5db","secondary-fixed":"#ffdbcc","inverse-surface":"#382f28","status-danger":"#C92A2A","on-background":"#221a14","border-warm":"#E8DFD6","conf-nominal":"#F76707","conf-high":"#B71C1C","inverse-on-surface":"#ffede3","outline":"#8e7067","surface-container-highest":"#f0dfd5","conf-low":"#FFC078","on-secondary-fixed-variant":"#7b2f00","surface-container-lowest":"#ffffff","error-container":"#ffdad6","text-subtle":"#8F8279","fire-deep-orange":"#D9480F","primary-fixed-dim":"#ffb59e","bg-base":"#FBF8F5","primary-container":"#d14307","risk-low":"#FCC419","fire-tint":"#FFF1E6","tertiary-fixed":"#abedff","tertiary-container":"#247f92","error":"#ba1a1a","on-error-container":"#93000a","on-tertiary-fixed":"#001f26","on-tertiary-container":"#f9fdff","ember-text-muted":"#D9B8AC","on-surface":"#221a14","on-primary-fixed-variant":"#842500","surface":"#FFFFFF","surface-container-low":"#fff1e9","surface-muted":"#F5EFE9","status-warning":"#E67700","secondary":"#a14000","on-secondary-fixed":"#351000","outline-variant":"#e3bfb4","on-primary-fixed":"#390b00","status-success":"#2B8A3E","text-muted":"#6B5F57","on-surface-variant":"#5a4139","on-tertiary-fixed-variant":"#004e5c","ember":"#2A1210","surface-dim":"#e7d7cd","surface-tint":"#ad3300","on-primary":"#ffffff","on-secondary-container":"#571f00","primary":"#a93200","secondary-fixed-dim":"#ffb694","text-main":"#1F1A17","on-secondary":"#ffffff","tertiary-fixed-dim":"#82d2e7","on-primary-container":"#fffbff","tertiary":"#006577","surface-bright":"#fff8f5","surface-variant":"#f0dfd5","on-tertiary":"#ffffff","risk-very-high":"#7A0C1E","primary-fixed":"#ffdbd0","risk-medium":"#FD7E14","fire-orange":"#F76707","surface-container":"#fcebe0","risk-high":"#E03131","fire-red":"#C92A2A","inverse-primary":"#ffb59e","on-error":"#ffffff","weather-teal":"#0B7285","ember-surface":"#3B1814","background":"#fff8f5","fire-tint-strong":"#FFD8BF","status-info":"#1C7ED6","fire-crimson":"#9F1D1D","ember-text":"#FBEFE9"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"space-lg":"1.5rem","margin-md":"1.5rem","space-xs":"0.5rem","gutter-md":"1.5rem","margin":"1rem","space-xxs":"0.25rem","gutter-lg":"2rem","space-xl":"2rem","space-md":"1rem","margin-lg":"2rem","gutter":"1rem","space-2xl":"3rem","space-sm":"0.75rem"},"fontFamily":{"label-md":["DM Sans"],"body-lg":["Inter"],"headline-md":["DM Sans"],"headline-xl-mobile":["DM Sans"],"code-sm":["JetBrains Mono"],"label-sm":["DM Sans"],"headline-xl":["DM Sans"],"display-kpi":["DM Sans"],"body-md":["Inter"],"headline-sm":["DM Sans"],"body-sm":["Inter"],"code-md":["JetBrains Mono"],"headline-lg":["DM Sans"]},"fontSize":{"label-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-md":["22px",{"lineHeight":"30px","letterSpacing":"-0.005em","fontWeight":"600"}],"headline-xl-mobile":["26px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"700"}],"code-sm":["11px",{"lineHeight":"16px","fontWeight":"400"}],"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"headline-xl":["32px",{"lineHeight":"40px","letterSpacing":"-0.015em","fontWeight":"700"}],"display-kpi":["36px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"22px","fontWeight":"400"}],"headline-sm":["18px",{"lineHeight":"26px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"18px","fontWeight":"400"}],"code-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.01em","fontWeight":"700"}]}}}};</script></head><body class="bg-bg-base font-body-md text-body-md text-text-main antialiased relative min-h-screen selection:bg-fire-tint selection:text-fire-deep-orange"><header class="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-margin"><div class="mt-3 w-full max-w-[1120px] h-14 bg-surface rounded-full shadow-[0_8px_24px_rgba(31,26,23,0.12)] border border-border-warm px-5 flex items-center justify-between pointer-events-auto transition-all duration-200"><div class="flex items-center gap-3"><img alt="PantauApi Flame Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBD8agvUFlRsJu9RXlzL4KIeJCZlVEq8YLAo-11L0tEjUi2Ftc1dIZFT-tYyTwvQT6uSQnWx_xl2norWXOYiTI1IoxWlhYeFt7d64ANZ-vTYxqyObHIL0WTMbNkW6LYoN6yvzktJFNXgwxDACjr2gYVyjBDZGW7NpfksjIHgZ9ylcOoPAWkYTd6O1Yre94MoTBUaJs4P0U0mTYiQD7nLiShLtiWbLrzhma6YaGtDp8y"/><span class="font-headline-sm text-headline-sm font-bold text-text-main tracking-tight">PantauApi</span></div><nav class="flex items-center gap-1.5 p-1" data-active-classes="bg-fire-tint text-fire-deep-orange font-semibold rounded-full"><a class="px-4 py-1.5 rounded-full font-label-md text-label-md text-text-muted hover:text-text-main transition-colors duration-150" data-path="peta" href="#">Peta</a><a class="px-4 py-1.5 rounded-full font-label-md text-label-md text-text-muted hover:text-text-main transition-colors duration-150" data-path="data-pre-processing" href="#">Data &amp; Pre-processing</a><a class="px-4 py-1.5 rounded-full font-label-md text-label-md text-text-muted hover:text-text-main transition-colors duration-150" data-path="analitik" href="#">Analitik</a></nav><div class="flex items-center gap-3"><div class="hidden sm:flex items-center gap-2 bg-surface-muted text-text-muted rounded-full px-3 py-1 font-label-sm text-label-sm border border-border-warm"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-status-success"></span></span><span>Diperbarui 14:05 WIB</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full min-h-screen pt-14 bg-bg-base relative"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1200px] mx-auto px-margin md:px-margin-md lg:px-margin-lg py-6 space-y-6">
+<!-- Status Strip: 4 Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1: HDFS Row Count -->
+<div class="bg-surface rounded-xl p-4 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between gap-2 mb-2">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider">Total Baris Mentah HDFS</span>
+<span class="inline-flex items-center gap-1 bg-surface-muted text-status-success rounded-full px-2 py-0.5 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>≥ 1M Terpenuhi</span>
+</span>
+</div>
+<div class="mb-3">
+<div class="font-display-kpi text-display-kpi font-bold text-text-main tabular-nums leading-none">3.482.116</div>
+<span class="font-code-sm text-code-sm text-text-subtle">Target minimum: 1.000.000 baris</span>
+</div>
+<div class="space-y-1">
+<div class="w-full h-1.5 bg-surface-muted rounded-full overflow-hidden">
+<div class="h-full bg-status-success rounded-full w-full"></div>
+</div>
+<div class="flex justify-between items-center font-code-sm text-code-sm text-text-muted">
+<span>Progress kuota</span>
+<span class="tabular-nums font-semibold text-status-success">348,2%</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Ingest Terakhir -->
+<div class="bg-surface rounded-xl p-4 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between gap-2 mb-2">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider">Ingest Terakhir</span>
+<span class="inline-flex items-center gap-1 bg-surface-muted text-status-success rounded-full px-2 py-0.5 font-label-sm text-label-sm">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-status-success"></span>
+<span>Tepat Waktu</span>
+</span>
+</div>
+<div class="mb-3">
+<div class="font-display-kpi text-display-kpi font-bold text-text-main tabular-nums leading-none">14:05 <span class="font-headline-sm text-headline-sm font-normal text-text-muted">WIB</span></div>
+<span class="font-label-sm text-label-sm text-fire-deep-orange font-medium">+12.480 baris baru dialirkan</span>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm text-text-muted pt-1">
+<span>Sinkronisasi FIRMS NRT</span>
+<span class="font-code-sm text-code-sm text-text-main tabular-nums">Interval 15m</span>
+</div>
+</div>
+<!-- Card 3: Status Spark -->
+<div class="bg-surface rounded-xl p-4 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between gap-2 mb-2">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider">Status Spark Cluster</span>
+<span class="inline-flex items-center gap-1 bg-surface-muted text-weather-teal rounded-full px-2 py-0.5 font-label-sm text-label-sm">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-weather-teal animate-pulse"></span>
+<span>Job Siap / Idle</span>
+</span>
+</div>
+<div class="mb-3">
+<div class="font-headline-lg text-headline-lg font-bold text-text-main flex items-center gap-2">
+<span>local[4]</span>
+<span class="font-label-md text-label-md font-normal text-text-muted">• 4 GB RAM</span>
+</div>
+<span class="font-code-sm text-code-sm text-text-subtle">Job terakhir selesai 12m yang lalu</span>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm text-text-muted pt-1">
+<span>Driver: <span class="text-text-main">PySpark v3.5.0</span></span>
+<span class="text-status-success font-medium">Memory 92% Bebas</span>
+</div>
+</div>
+<!-- Card 4: Karantina Data -->
+<div class="bg-surface rounded-xl p-4 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between gap-2 mb-2">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider">Karantina Anomali</span>
+<span class="inline-flex items-center gap-1 bg-surface-container text-fire-crimson rounded-full px-2 py-0.5 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+<span>3 File Terisolasi</span>
+</span>
+</div>
+<div class="mb-3">
+<div class="font-display-kpi text-display-kpi font-bold text-text-main tabular-nums leading-none">142 <span class="font-headline-sm text-headline-sm font-normal text-text-muted">baris</span></div>
+<span class="font-code-sm text-code-sm text-text-subtle">Skema korup / missing lat-lon</span>
+</div>
+<a class="inline-flex items-center gap-1 font-label-sm text-label-sm text-fire-deep-orange hover:text-fire-crimson font-medium transition-colors pt-1" href="#">
+<span>Periksa tabel karantina</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Navigation Tabs Strip -->
+<div class="flex items-center justify-between bg-surface rounded-xl px-2 py-1.5 shadow-sm overflow-x-auto">
+<div class="flex items-center gap-1 sm:gap-2">
+<!-- Tab 1: Sumber Data -->
+<a class="px-4 py-2 rounded-lg font-label-md text-label-md text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">database</span>
+<span>Sumber Data</span>
+</a>
+<!-- Tab 2: Pre-processing (ACTIVE) -->
+<a class="px-4 py-2 rounded-lg font-label-md text-label-md font-bold text-fire-deep-orange bg-fire-tint shadow-sm flex items-center gap-2 relative" href="#">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span>Pre-processing</span>
+<span class="inline-flex items-center bg-fire-deep-orange text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Siap Dikonfigurasi</span>
+<span class="absolute bottom-0 left-3 right-3 h-[2px] bg-fire-deep-orange rounded-full"></span>
+</a>
+<!-- Tab 3: Riwayat Job -->
+<a class="px-4 py-2 rounded-lg font-label-md text-label-md text-text-muted hover:text-text-main hover:bg-surface-muted transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Riwayat Job</span>
+<span class="inline-flex items-center bg-surface-muted text-text-muted text-[11px] font-medium px-2 py-0.5 rounded-full tabular-nums">12 Selesai</span>
+</a>
+</div>
+<div class="hidden md:flex items-center gap-2 pr-2">
+<span class="font-code-sm text-code-sm text-text-subtle">Engine:</span>
+<span class="font-code-sm text-code-sm bg-surface-muted text-text-main px-2.5 py-1 rounded-md font-medium">PySpark Core 3.5.0-native</span>
+</div>
+</div>
+<!-- Section Header (Editorial & Technical) -->
+<div class="bg-surface rounded-xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-fire-tint text-fire-deep-orange">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</span>
+<h1 class="font-headline-lg text-headline-lg font-bold text-text-main tracking-tight">Pipeline Pre-processing Terdistribusi (PySpark)</h1>
+</div>
+<p class="font-body-md text-body-md text-text-muted max-w-3xl">
+          Konfigurasikan tahapan pembersihan data, standardisasi skema kanonik, kalkulasi normalisasi skalar, dan pengayaan spasial multi-resolusi sebelum proses induksi model XGBoost/LSTM atau agregasi analitik geospatial.
+        </p>
+</div>
+<div class="flex items-center gap-2 self-start md:self-auto shrink-0">
+<button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-muted hover:bg-surface-container text-text-main font-label-sm text-label-sm transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Reset Skema</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-muted hover:bg-surface-container text-text-main font-label-sm text-label-sm transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Impor YAML</span>
+</button>
+</div>
+</div>
+<!-- Main Workspace Layout: Side Profiling Panel (approx 360px) + Main Stepper (Flexible) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT COLUMN: Dataset Selector & Pre-pipeline Profiling (4 cols / ~360px) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Card: HDFS Source Dataset Picker -->
+<div class="bg-surface rounded-xl p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-fire-deep-orange text-[20px]">folder_special</span>
+<h2 class="font-headline-sm text-headline-sm text-text-main">Pilih Dataset Sumber HDFS</h2>
+</div>
+<span class="bg-fire-tint text-fire-deep-orange font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">Partisi Aktif</span>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-label-sm text-text-muted block">Path Direktori HDFS NRT Raw</label>
+<div class="relative">
+<select class="w-full h-10 pl-3 pr-8 rounded-lg bg-surface-muted font-code-sm text-code-sm text-text-main appearance-none focus:outline-none focus:ring-2 focus:ring-fire-deep-orange cursor-pointer">
+<option selected="">hdfs:///karhutla/raw/firms_nrt/date=2026-03-16/</option>
+<option>hdfs:///karhutla/raw/firms_nrt/date=2026-03-15/</option>
+<option>hdfs:///karhutla/raw/firms_nrt/date=2026-03-14/</option>
+<option>hdfs:///karhutla/raw/sipongi_consolidated/date=2026-03-16/</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 pointer-events-none text-text-muted text-[18px]">expand_more</span>
+</div>
+<div class="flex items-center justify-between font-code-sm text-code-sm text-text-subtle pt-0.5">
+<span>Sensor: <strong class="text-text-main">VIIRS SNPP + MODIS</strong></span>
+<span class="text-status-success font-medium">3.482.116 baris terdeteksi</span>
+</div>
+</div>
+<!-- Partition Options -->
+<div class="pt-2 space-y-2">
+<label class="flex items-start gap-2.5 cursor-pointer select-none">
+<input class="mt-1 h-4 w-4 rounded text-fire-deep-orange focus:ring-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div>
+<span class="font-label-md text-label-md text-text-main">Sertakan data historis (2023–2025)</span>
+<p class="font-body-sm text-body-sm text-text-muted">Menggabungkan 12.8M baris tambahan untuk re-kalibrasi fitur spasio-temporal tahunan.</p>
+</div>
+</label>
+<label class="flex items-start gap-2.5 cursor-pointer select-none">
+<input checked="" class="mt-1 h-4 w-4 rounded text-fire-deep-orange focus:ring-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div>
+<span class="font-label-md text-label-md text-text-main">Bypass baris terkonfirmasi anomali</span>
+<p class="font-body-sm text-body-sm text-text-muted">Otomatis isolasi data payload malformed ke tabel karantina.</p>
+</div>
+</label>
+</div>
+</div>
+<!-- Card: Pre-Pipeline Data Profiling Summary -->
+<div class="bg-surface rounded-xl p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-weather-teal text-[20px]">analytics</span>
+<h2 class="font-headline-sm text-headline-sm text-text-main">Ringkasan Profiling Dataset</h2>
+</div>
+<span class="font-code-sm text-code-sm text-text-subtle">Tahap Pra-Cleaning</span>
+</div>
+<!-- Mini Metrics Grid -->
+<div class="grid grid-cols-2 gap-2.5">
+<div class="bg-surface-muted rounded-lg p-3 space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted block">Total Kolom</span>
+<span class="font-headline-md text-headline-md font-bold text-text-main tabular-nums">14 Kolom</span>
+<span class="font-code-sm text-code-sm text-text-subtle block">Format: Parquet Raw</span>
+</div>
+<div class="bg-surface-muted rounded-lg p-3 space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted block">Missing / Null</span>
+<span class="font-headline-md text-headline-md font-bold text-status-warning tabular-nums">4,2%</span>
+<span class="font-code-sm text-code-sm text-text-subtle block">Kolom confidence &amp; scan</span>
+</div>
+<div class="bg-surface-muted rounded-lg p-3 space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted block">Duplikasi Mentah</span>
+<span class="font-headline-md text-headline-md font-bold text-fire-crimson tabular-nums">18.240</span>
+<span class="font-code-sm text-code-sm text-text-subtle block">0,52% dari populasi</span>
+</div>
+<div class="bg-surface-muted rounded-lg p-3 space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted block">Luar BBox RI</span>
+<span class="font-headline-md text-headline-md font-bold text-fire-crimson tabular-nums">312</span>
+<span class="font-code-sm text-code-sm text-text-subtle block">0,009% koordinat anomali</span>
+</div>
+</div>
+<!-- Schema Inspection Accordion/Preview -->
+<div class="space-y-2 pt-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wide">Skema Kolom Mentah (Raw StructType)</span>
+<span class="font-code-sm text-code-sm text-text-subtle">10 Ditampilkan</span>
+</div>
+<div class="bg-surface-muted rounded-lg p-3 font-code-sm text-code-sm space-y-1.5 max-h-56 overflow-y-auto">
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">latitude</span>
+<span class="text-weather-teal font-mono">Float64</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">longitude</span>
+<span class="text-weather-teal font-mono">Float64</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">bright_ti4</span>
+<span class="text-weather-teal font-mono">Float32</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">scan</span>
+<span class="text-weather-teal font-mono">Float32</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">track</span>
+<span class="text-weather-teal font-mono">Float32</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">acq_date</span>
+<span class="text-fire-deep-orange font-mono">String (YYYY-MM-DD)</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">acq_time</span>
+<span class="text-weather-teal font-mono">Int32 (HHMM)</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">satellite</span>
+<span class="text-fire-deep-orange font-mono">String</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">confidence</span>
+<span class="text-status-warning font-mono">String / Int32</span>
+</div>
+<div class="flex items-center justify-between py-0.5">
+<span class="text-text-main font-medium">frp (Fire Radiative)</span>
+<span class="text-weather-teal font-mono">Float32</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Health Box -->
+<div class="bg-surface-container rounded-lg p-3.5 flex items-start gap-3">
+<span class="material-symbols-outlined text-fire-deep-orange text-[20px] shrink-0 mt-0.5">verified_user</span>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-semibold text-text-main block">Integritas Hash Partisi Terverifikasi</span>
+<p class="font-body-sm text-body-sm text-text-muted">Checksum SHA-256 data harian valid. Dataset siap untuk dieksekusi melalui DAG Apache Spark.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT / MAIN COLUMN: Sequential Step-by-Step Pipeline Stepper (8 cols) -->
+<div class="lg:col-span-8 space-y-4">
+<!-- Stepper Header Status Bar -->
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-bold text-text-main">Tahapan Eksekusi Pipeline DAG</span>
+<span class="font-code-sm text-code-sm bg-fire-tint text-fire-deep-orange px-2 py-0.5 rounded-full font-semibold">6 dari 6 Langkah Siap</span>
+</div>
+<button class="font-label-sm text-label-sm text-text-muted hover:text-text-main flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">unfold_less</span>
+<span>Tutup / Buka Semua</span>
+</button>
+</div>
+<!-- Step 1: Cleaning & Validasi Filter -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+<div class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-surface-muted/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-full bg-fire-tint text-fire-deep-orange flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                1
+              </div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="font-headline-sm text-headline-sm text-text-main">Cleaning &amp; Validasi Filter Geografis</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-status-success bg-surface-muted px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Dikonfigurasi</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Menyingkirkan redundansi data sensor, koordinat invalid luar batas nasional, dan nilai ekstrem FRP.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px] shrink-0 mt-1">expand_less</span>
+</div>
+<!-- Step 1 Body -->
+<div class="px-5 pb-5 pt-1 space-y-3 bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Deduplikasi Berbasis Kunci Unik</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Spark: dropDuplicates(['lat','lon','acq_date','acq_time','satellite'])</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Filter BBox Indonesia</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Lat: -11.0° s/d 6.0° • Lon: 95.0° s/d 141.0°</span>
+</div>
+</label>
+<div class="p-3 rounded-lg bg-surface-muted space-y-1.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Opsi Penanganan Null / Missing Value</span>
+<select class="w-full h-8 px-2.5 rounded bg-surface font-code-sm text-code-sm text-text-main focus:outline-none focus:ring-1 focus:ring-fire-deep-orange cursor-pointer">
+<option selected="">Hapus baris jika koordinat atau FRP null (Drop NA)</option>
+<option>Imputasi FRP dengan Median Spasial Wilayah (KNN-3)</option>
+<option>Tandai flag missing_telemetry = true</option>
+</select>
+</div>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Deteksi Outlier FRP (IQR 3x)</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Winsorize nilai ekstrem &gt; 1.500 MW ke batas ambang atas 99.5%</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Step 2: Transformasi & Standardisasi Tipe -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+<div class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-surface-muted/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-full bg-fire-tint text-fire-deep-orange flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                2
+              </div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="font-headline-sm text-headline-sm text-text-main">Transformasi &amp; Standardisasi Tipe Kanonik</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-status-success bg-surface-muted px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Dikonfigurasi</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Penyelarasan zonasi waktu satelit ke WIB dan unifikasi tingkat keyakinan (confidence scoring).</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px] shrink-0 mt-1">expand_less</span>
+</div>
+<!-- Step 2 Body -->
+<div class="px-5 pb-5 pt-1 space-y-3 bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Konversi Timestamp UTC → WIB</span>
+<span class="font-code-sm text-code-sm text-text-muted block">from_utc_timestamp(acq_time, 'Asia/Jakarta' +07:00)</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Ekstraksi Fitur Kalender Kanonik</span>
+<span class="font-code-sm text-code-sm text-text-muted block">year, month, day, dayofyear, hour, is_weekend</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Standardisasi Skala Confidence</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Unifikasi: VIIRS 'l/n/h' &amp; MODIS 0-100% → ['low','nominal','high']</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Standardisasi Kolom snake_case</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Pencocokan skema canonical FIRMS-MODIS OpenGIS</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Step 3: Normalisasi Fitur -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+<div class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-surface-muted/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-full bg-fire-tint text-fire-deep-orange flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                3
+              </div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="font-headline-sm text-headline-sm text-text-main">Normalisasi Fitur Kontinu</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-status-success bg-surface-muted px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Dikonfigurasi</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Skalasi nilai suhu kecerahan satelit dan intensitas FRP untuk stabilitas konvergensi model numerik.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px] shrink-0 mt-1">expand_less</span>
+</div>
+<!-- Step 3 Body -->
+<div class="px-5 pb-5 pt-1 space-y-3 bg-surface">
+<div class="p-3 rounded-lg bg-surface-muted flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<span class="font-label-md text-label-md font-medium text-text-main">Metode Penskalaan Terpilih:</span>
+<div class="relative w-full sm:w-64">
+<select class="w-full h-8 pl-3 pr-8 rounded bg-surface font-code-sm text-code-sm text-text-main focus:outline-none focus:ring-1 focus:ring-fire-deep-orange cursor-pointer">
+<option selected="">Min-Max Scaler (Rentang [0.0, 1.0])</option>
+<option>StandardScaler (Z-Score Mean 0, Std 1)</option>
+<option>RobustScaler (Median &amp; Interkuartil)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 pointer-events-none text-text-muted text-[16px]">expand_more</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Normalisasi Brightness Temp (bright_ti4)</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Hasil kolom: bright_norm (Kelvin dinormalisasi)</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Normalisasi Fire Radiative Power (FRP)</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Hasil kolom: frp_norm (simpan scaler.json untuk serving)</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Step 4: Spatial Enrichment (Grid 0.25° & Wilayah) -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+<div class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-surface-muted/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-full bg-fire-tint text-fire-deep-orange flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                4
+              </div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="font-headline-sm text-headline-sm text-text-main">Spatial Enrichment (Grid 0.25° &amp; Batas Administrasi)</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-status-success bg-surface-muted px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Dikonfigurasi</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Pemetaan titik hotspot acak ke dalam sistem grid teratur ~27.5 km dan spatial lag tetangga.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px] shrink-0 mt-1">expand_less</span>
+</div>
+<!-- Step 4 Body -->
+<div class="px-5 pb-5 pt-1 space-y-3 bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Asimilasi Grid ID (0.25°)</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Resolusi ~27.5 km, hitung grid_lat, grid_lon, cell_hash</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Spatial Join 38 Provinsi</span>
+<span class="font-code-sm text-code-sm text-text-muted block">GeoJSON poligonal batas administratif BIG / BPS 2024</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Spatial Lag 8-Tetangga</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Kerapatan hotspot jendela bergerak (spatial lag 7 hari)</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Step 5: Integrasi Cuaca & Fitur Atmosfer -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+<div class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-surface-muted/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-full bg-fire-tint text-fire-deep-orange flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                5
+              </div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="font-headline-sm text-headline-sm text-text-main">Integrasi Cuaca &amp; Fitur Atmosfer (CHIRPS &amp; ERA5)</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-status-success bg-surface-muted px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Dikonfigurasi</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Pengayaan data presipitasi satelit, kelembapan relatif, dan deteksi periode hari kering beruntun.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px] shrink-0 mt-1">expand_less</span>
+</div>
+<!-- Step 5 Body -->
+<div class="px-5 pb-5 pt-1 space-y-3 bg-surface">
+<div class="p-3 rounded-lg bg-surface-muted flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<span class="font-label-md text-label-md font-medium text-text-main">Sumber Data Reanalisis:</span>
+<span class="font-code-sm text-code-sm bg-surface text-weather-teal px-3 py-1 rounded font-medium">CHIRPS Harian + ERA5-Land Reanalysis (ECMWF)</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Join Akumulasi Presipitasi (7 &amp; 14 Hari)</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Kolom: precip_accum_7d, precip_accum_14d per grid_id</span>
+</div>
+</label>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div class="space-y-0.5">
+<span class="font-label-md text-label-md font-medium text-text-main block">Indeks Hari Kering (Consecutive Dry Days)</span>
+<span class="font-code-sm text-code-sm text-text-muted block">Hitung jumlah hari beruntun dengan curah hujan &lt; 1.0 mm</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Step 6: Ekspor Target & Penyimpanan Parquet -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden transition-all duration-200">
+<div class="p-5 flex items-start justify-between gap-4 cursor-pointer hover:bg-surface-muted/50 transition-colors">
+<div class="flex items-start gap-3.5">
+<div class="w-8 h-8 rounded-full bg-fire-tint text-fire-deep-orange flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                6
+              </div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="font-headline-sm text-headline-sm text-text-main">Ekspor Target &amp; Sinkronisasi Penyimpanan Parquet</h3>
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-status-success bg-surface-muted px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Dikonfigurasi</span>
+</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Menyimpan partisi Apache Parquet ke direktori HDFS clean dan perbarui database DuckDB analytical serving.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[20px] shrink-0 mt-1">expand_less</span>
+</div>
+<!-- Step 6 Body -->
+<div class="px-5 pb-5 pt-1 space-y-3 bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+<div class="p-3 rounded-lg bg-surface-muted space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted block">Target Direktori HDFS Clean</span>
+<span class="font-code-sm text-code-sm font-medium text-text-main block truncate">hdfs:///karhutla/clean/hotspot/year=2026/month=03/</span>
+<span class="font-code-sm text-code-sm text-text-subtle block">Kompresi Snappy • PartitionBy: year, month</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-muted space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted block">Serving Layer Mirror DuckDB</span>
+<span class="font-code-sm text-code-sm font-medium text-text-main block truncate">C:\karhutla-data\serving\hotspot_latest.parquet</span>
+<span class="font-code-sm text-code-sm text-text-subtle block">Mendukung query latensi ultra-rendah dashboard peta</span>
+</div>
+</div>
+<label class="flex items-start gap-2.5 p-3 rounded-lg bg-surface-muted cursor-pointer hover:bg-surface-container transition-colors">
+<input checked="" class="mt-0.5 h-4 w-4 rounded text-fire-deep-orange accent-fire-deep-orange" type="checkbox"/>
+<div>
+<span class="font-label-md text-label-md font-medium text-text-main block">Buat Snapshot Metadata Lineage &amp; Log Run ID</span>
+<span class="font-body-sm text-body-sm text-text-muted block">Catat checksum hash, waktu eksekusi total, dan metrik reduksi baris ke riwayat audit.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky / Bottom Config Summary & Execution Action Bar -->
+<div class="sticky bottom-4 z-40 w-full bg-ember rounded-xl p-4 md:p-5 shadow-xl text-ember-text flex flex-col lg:flex-row items-center justify-between gap-4">
+<!-- Telemetry Info -->
+<div class="flex items-center gap-3.5 self-start lg:self-auto">
+<div class="w-10 h-10 rounded-lg bg-ember-surface flex items-center justify-center text-fire-orange shrink-0">
+<span class="material-symbols-outlined text-[24px]">speed</span>
+</div>
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-bold text-ember-text">Estimasi Waktu Eksekusi: ~2m 45s</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-status-success"></span>
+<span class="font-code-sm text-code-sm text-ember-text-muted">4 Core PySpark</span>
+</div>
+<p class="font-code-sm text-code-sm text-ember-text-muted">
+            Estimasi Output: <span class="text-fire-tint font-semibold">~3,46M baris terverifikasi</span> • 99,4% lolos pembersihan • 18.552 baris terfilter
+          </p>
+</div>
+</div>
+<!-- Actions Buttons -->
+<div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-end">
+<!-- Action 1: Save JSON Config -->
+<button class="px-3.5 py-2.5 rounded-lg bg-ember-surface hover:bg-ember-surface/80 text-ember-text font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">code</span>
+<span>Simpan Template JSON</span>
+</button>
+<!-- Action 2: Dry Run Sample -->
+<button class="px-3.5 py-2.5 rounded-lg bg-ember-surface hover:bg-ember-surface/80 text-ember-text font-label-md text-label-md transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">bug_report</span>
+<span>Dry Run (1.000 Baris)</span>
+</button>
+<!-- Action 3: Trigger Pipeline Spark (Primary CTA) -->
+<button class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-fire-orange to-fire-red hover:from-fire-deep-orange hover:to-fire-crimson text-white font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all duration-150 flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span>Jalankan Pipeline Spark (PySpark ETL)</span>
+</button>
+</div>
+</div>
+<!-- Supplementary Informative Footer Note -->
+<div class="text-center pb-2">
+<span class="font-code-sm text-code-sm text-text-subtle">
+        PantauApi ETL Engine • Pipeline PySpark ID: <span class="font-mono text-text-muted">dag-hotspot-prep-v2.4-prod</span> • Terhubung ke Klaster HDFS PantauApi LocalNode
+      </span>
+</div>
+</div>
+</div></main><footer class="w-full bg-ember border-t border-ember-surface py-6 px-margin md:px-margin-md lg:px-margin-lg text-center z-10 relative text-ember-text"><div class="w-full max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left"><p class="font-body-sm text-body-sm text-ember-text-muted">Sumber Data: NASA FIRMS, CHIRPS, ERA5, SiPongi+, BNPB</p><p class="font-body-sm text-body-sm text-ember-text-muted">Hotspot adalah indikasi anomali suhu satelit, bukan kepastian kebakaran.</p></div></footer></body></html>
