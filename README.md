@@ -7,7 +7,7 @@ Tiga halaman: Peta (`/`), Data & Pre-processing (`/data`), Analitik (`/analytics
 ## Dokumen
 - `AGENTS.md`: aturan agent (selalu aktif); `.agents/rules/`: aturan terperinci; `.agents/workflows/start-phase.md`: `/start-phase <nomor>`
 - `docs/PRD.md` (v1.2), `docs/UI_SPEC.md`, `docs/DESIGN.md`, `docs/STITCH_PROMPTS.md`
-- `docs/ENVIRONMENT.md`, `docs/TASKS.md`, `docs/DATA_SOURCES.md`
+- `docs/ENVIRONMENT.md`, `docs/TASKS.md`, `docs/DATA_SOURCES.md`, `docs/MODEL.md`
 
 ## Mulai Cepat
 1. Salin `.env.example` menjadi `.env` dan isi.
@@ -45,7 +45,11 @@ Laporan job: `C:\karhutla-data\serving\pipeline_run_summary.json`, `serving_meta
   "Perbarui agregasi" (`POST /api/analytics/refresh` -> job `aggregate.py`).
 - Seksi Ringkasan (tren harian/mingguan/bulanan + kumulatif tahunan), Wilayah (ranking, choropleth, top grid),
   Musiman (heatmap bulan x tahun / bulan x provinsi), Faktor Pengaruh (status FP1-FP6), Cuaca, Prediksi ML, Validasi.
-- Endpoint: `GET /api/analytics/{kpi,trend,ranking,seasonality,year-compare,top-grid,insights,weather-correlation}`.
-  Semua dibaca dari serving layer DuckDB (`agg_daily_province`, `agg_daily_grid`), tanpa perhitungan di klien.
-- Lapisan diagnostik (FP1-FP4, FP6) dan Prediksi ML ditandai jujur belum tersedia: membutuhkan data cuaca dan model
-  pada Fase 6. Tidak ada angka prediksi/anomali yang dikarang.
+- Prediksi ML: metrik uji (AUC-ROC, AUC-PR, precision, recall, F1), confusion matrix, feature importance,
+  perbandingan baseline persistensi, sebaran kategori risiko, dan 10 grid risiko tertinggi; tombol
+  "Perbarui prediksi" mengantrekan `POST /api/analytics/model/refresh`.
+- Endpoint: `GET /api/analytics/{kpi,trend,ranking,seasonality,year-compare,top-grid,insights,weather-correlation,model}`.
+  Semua dibaca dari serving layer DuckDB (`agg_daily_province`, `agg_daily_grid`, `risk_prediction`), tanpa
+  perhitungan di klien.
+- Lapisan diagnostik cuaca (FP1-FP3) tetap ditandai belum tersedia karena data ERA5 hanya 10 stasiun 2022-2024;
+  FP4/FP6 tersedia lewat feature importance model. Tidak ada angka prediksi/anomali yang dikarang.

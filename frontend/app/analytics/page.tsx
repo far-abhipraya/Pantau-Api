@@ -22,6 +22,7 @@ import {
   type AnalyticsGranularity,
   type AnalyticsInsights,
   type AnalyticsKpi,
+  type AnalyticsModel,
   type AnalyticsRanking,
   type AnalyticsSeasonality,
   type AnalyticsTopGrid,
@@ -64,6 +65,9 @@ export default function AnalyticsPage() {
   const [seasonality, setSeasonality] = useState<AnalyticsSeasonality | null>(null);
   const [topGrid, setTopGrid] = useState<AnalyticsTopGrid | null>(null);
   const [weather, setWeather] = useState<WeatherCorrelation | null>(null);
+  const [model, setModel] = useState<AnalyticsModel | null>(null);
+  const [modelError, setModelError] = useState<string | null>(null);
+  const [modelLoading, setModelLoading] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
@@ -160,6 +164,27 @@ export default function AnalyticsPage() {
     setGranularity(value === 30 ? "day" : value === 90 ? "week" : "month");
   }, []);
 
+  // Model dan risiko tidak bergantung filter halaman; cukup dimuat sekali.
+  useEffect(() => {
+    const controller = new AbortController();
+    api
+      .analyticsModel({ signal: controller.signal })
+      .then((data) => {
+        setModel(data);
+        setModelError(null);
+      })
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setModelError(error instanceof Error ? error.message : "Gagal memuat status model");
+      })
+      .finally(() => setModelLoading(false));
+    return () => controller.abort();
+  }, []);
+
+  const refreshModel = useCallback(async () => {
+    await api.analyticsModelRefresh();
+  }, []);
+
   const refresh = useCallback(async () => {
     setRefreshing(true);
     setNotice(null);
@@ -193,7 +218,8 @@ export default function AnalyticsPage() {
           </h1>
           <p className="mt-1 max-w-3xl text-sm text-text-muted">
             Ringkasan deskriptif dari serving layer: tren, wilayah, pola musiman, dan insight otomatis.
-            Lapisan diagnostik (faktor cuaca) serta prediksi ML menyusul saat data dan model tersedia.
+            Lapisan diagnostik cuaca menunggu data lengkap; prediksi risiko 7 hari memakai model
+            berbasis waktu dengan baseline persistensi.
           </p>
         </div>
 
@@ -243,11 +269,16 @@ export default function AnalyticsPage() {
 
         <MusimanSection data={seasonality} loading={loading} error={errors.seasonality} />
 
-        <FaktorSection />
+        <FaktorSection modelAvailable={Boolean(model?.available)} />
 
         <CuacaSection weather={weather} loading={loading} error={errors.weather} />
 
-        <PrediksiSection />
+        <PrediksiSection
+          model={model}
+          loading={modelLoading}
+          error={modelError}
+          onRefresh={refreshModel}
+        />
 
         <ValidasiSection />
 

@@ -486,6 +486,66 @@ export type WeatherCorrelation = {
   computed_at: string;
 };
 
+export type ModelMetric = {
+  auc_roc: number;
+  auc_pr: number;
+  precision: number;
+  recall: number;
+  f1: number;
+  confusion: { tp: number; fp: number; fn: number; tn: number };
+  rows: number;
+};
+
+export type ModelFeatureImportance = {
+  feature: string;
+  label: string;
+  value: number;
+};
+
+export type ModelRiskGrid = {
+  grid_id: string;
+  province: string | null;
+  lat: number;
+  lon: number;
+  risk_score: number;
+  risk_category: "rendah" | "sedang" | "tinggi" | "sangat tinggi";
+  target_date: string;
+  cnt_7d?: number;
+};
+
+export type AnalyticsModel = {
+  available: boolean;
+  message?: string;
+  version?: string;
+  algorithm?: string;
+  trained_at?: string;
+  split?: { train_end: string; validation: string; test_start: string };
+  rows?: { train: number; validation: number; test: number; positive_weight: number };
+  label_rate?: { train: number; test: number };
+  metrics?: {
+    model: ModelMetric;
+    baseline_persistence: ModelMetric;
+    gbt?: ModelMetric;
+  };
+  feature_importance?: ModelFeatureImportance[];
+  features?: string[];
+  weather_features_available?: boolean;
+  limitations?: string[];
+  risk: {
+    available: boolean;
+    predicted_at?: string;
+    feature_date?: string;
+    target_date?: string;
+    horizon_days?: number;
+    rows?: number;
+    categories?: Record<string, number>;
+    max_score?: number;
+    mean_score?: number;
+    thresholds?: Record<string, string>;
+    top_grids: ModelRiskGrid[];
+  };
+};
+
 // --- Transport -------------------------------------------------------------
 
 type RequestOptions = { signal?: AbortSignal };
@@ -637,6 +697,10 @@ export const api = {
   ) => get<AnalyticsInsights>("/analytics/insights", params, options),
   analyticsWeather: (options?: RequestOptions) =>
     get<WeatherCorrelation>("/analytics/weather-correlation", {}, options),
+  analyticsModel: (options?: RequestOptions) =>
+    get<AnalyticsModel>("/analytics/model", {}, options),
+  analyticsModelRefresh: (options?: RequestOptions) =>
+    post<{ job_id: string; status: string }>("/analytics/model/refresh", undefined, undefined, options),
   analyticsRefresh: (options?: RequestOptions) =>
     post<{ job_id: string; status: string }>("/analytics/refresh", undefined, undefined, options),
 };

@@ -14,8 +14,10 @@ const TYPE_LABEL: Record<string, string> = {
   AGGREGATION: "Agregasi serving",
   INGEST_MANUAL: "Ingest manual",
   INGEST_FOLDER: "Impor folder",
+  FEATURES: "Fitur ML",
   ML_TRAIN: "Latih model",
   ML_PREDICT: "Prediksi",
+  ML_REFRESH: "Fitur + latih + prediksi",
 };
 
 export default function JobsTab({

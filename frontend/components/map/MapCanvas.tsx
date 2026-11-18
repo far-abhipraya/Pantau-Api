@@ -28,9 +28,15 @@ export type MapProps = {
   onMapReady: (map: L.Map) => void;
 };
 
+const CARTO_API_KEY =
+  typeof process !== "undefined"
+    ? (process.env.NEXT_PUBLIC_CARTO_API_KEY ?? "")
+    : "";
+const CARTO_TILE_SUFFIX = CARTO_API_KEY ? `?api_key=${CARTO_API_KEY}` : "";
+
 const BASEMAPS = {
   light: {
-    url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    url: `https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png${CARTO_TILE_SUFFIX}`,
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a> · Hotspot: NASA FIRMS',
     maxZoom: 19,

@@ -80,9 +80,13 @@ def test_provinces_have_trend(client):
         assert 1 <= len(province["trend"]) <= 7
 
 
-def test_risk_unavailable_until_ml_phase(client):
+def test_risk_endpoint_matches_serving_state(client):
     body = client.get("/api/map/risk").json()
-    assert body["meta"]["available"] is False
+    assert body["type"] == "FeatureCollection"
+    if body["meta"]["available"]:
+        assert body["features"]
+    else:
+        assert body["features"] == []
 
 
 def test_geo_provinces_geojson(client):

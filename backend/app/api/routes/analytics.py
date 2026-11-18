@@ -7,7 +7,9 @@ atau model (Fase 6) dikembalikan sebagai `available: false`, bukan angka palsu.
 """
 from __future__ import annotations
 
+import json
 from datetime import date, datetime, timezone
+from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
@@ -60,6 +62,16 @@ def _filters(province: str | None, conf: str) -> tuple[str, list[Any]]:
 
 def _rows(sql: str, params: list[Any] | None = None) -> list[dict[str, Any]]:
     return serving.query(sql, params or [])
+
+
+def _read_json(name: str) -> dict[str, Any] | None:
+    path = Path(settings.SERVING_DIR) / name
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
 
 
 @router.get("/kpi", summary="KPI hero: hari ini, 7/30 hari, provinsi tertinggi, FRP")
@@ -590,6 +602,75 @@ def insights(
         }
 
     return serving.cached(("analytics-insights", days, province, conf), produce)
+
+
+@router.get("/model", summary="Metrik model ML dan ringkasan risiko 7 hari (FR-A5, AC-7)")
+def model() -> dict[str, Any]:
+    metrics = _read_json("model_metrics.json")
+    risk_summary = _read_json("risk_summary.json")
+    risk_available = bool(serving.available_tables().get("risk_prediction"))
+
+    top_grids: list[dict[str, Any]] = []
+    if risk_available:
+        top_grids = _rows(
+            """
+            SELECT grid_id, province, lat, lon, risk_score, risk_category, target_date, cnt_7d
+            FROM risk_prediction
+            ORDER BY risk_score DESC, cnt_7d DESC
+            LIMIT 10
+            """
+        )
+        for row in top_grids:
+            row["target_date"] = str(row["target_date"])
+            row["risk_score"] = float(row["risk_score"])
+
+    if not metrics:
+        return {
+            "available": False,
+            "message": "Model risiko belum dilatih. Jalankan fitur, training, dan prediksi pada Fase 6.",
+            "risk": {"available": risk_available, "top_grids": top_grids},
+        }
+
+    return {
+        "available": True,
+        "version": metrics.get("version"),
+        "algorithm": metrics.get("algorithm"),
+        "trained_at": metrics.get("trained_at"),
+        "split": metrics.get("split"),
+        "rows": metrics.get("rows"),
+        "label_rate": metrics.get("label_rate"),
+        "metrics": metrics.get("metrics"),
+        "feature_importance": metrics.get("feature_importance", []),
+        "features": metrics.get("features", []),
+        "weather_features_available": metrics.get("weather_features_available", False),
+        "limitations": metrics.get("limitations", []),
+        "risk": {
+            "available": risk_available and risk_summary is not None,
+            "predicted_at": (risk_summary or {}).get("computed_at"),
+            "feature_date": (risk_summary or {}).get("feature_date"),
+            "target_date": (risk_summary or {}).get("target_date"),
+            "horizon_days": (risk_summary or {}).get("horizon_days", 7),
+            "rows": (risk_summary or {}).get("rows", 0),
+            "categories": (risk_summary or {}).get("categories", {}),
+            "max_score": (risk_summary or {}).get("max_score", 0),
+            "mean_score": (risk_summary or {}).get("mean_score", 0),
+            "thresholds": (risk_summary or {}).get("thresholds", {}),
+            "top_grids": top_grids,
+        },
+    }
+
+
+@router.post("/model/refresh", summary="Jalankan fitur + latih + prediksi (FR-A5)")
+def model_refresh() -> dict[str, Any]:
+    job_id = f"model-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
+    submission = queue.submit(
+        job_id,
+        "ML_REFRESH",
+        "model_refresh.py",
+        ["--job-id", job_id],
+        {"trigger": "analytics-model-refresh"},
+    )
+    return submission
 
 
 @router.post("/refresh", summary="Jalankan ulang agregasi serving layer (FR-A7)")
