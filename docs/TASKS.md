@@ -74,9 +74,16 @@ Catatan Fase 4 (17 Nov 2026):
 - `pytest backend\tests` -> 20 passed (`test_phase4_api.py` menambah 7 tes: skema, jobs, katalog, upload, pagar hapus).
 
 ## Fase 5: Halaman Analitik (A + B)
-- [ ] Endpoint analytics (kpi, trend, ranking, seasonality, weather-correlation).
-- [ ] Halaman `/analytics`: hero KPI, filter lengket, section Ringkasan/Wilayah/Musiman/Cuaca.
+- [x] Endpoint analytics (kpi, trend, ranking, seasonality, weather-correlation). Tambahan: `year-compare` (FP5),
+  `top-grid`, `insights`, dan `POST /refresh` (FR-A7). Semua dari serving layer DuckDB.
+- [x] Halaman `/analytics`: hero KPI, filter lengket, section Ringkasan/Wilayah/Musiman/Cuaca (+Faktor Pengaruh,
+  Prediksi ML, Validasi sebagai status jujur).
 - Selesai bila: AC-5.
+- Bukti: `python -m pytest backend\tests -q` -> 30 passed (10 test analitik); `npm run build` sukses (route
+  `/`, `/data`, `/analytics`); uji browser: KPI 578/11.960/116.245, 3 kartu insight, filter provinsi + confidence,
+  heatmap 2 mode, choropleth 38 provinsi, top grid 10 baris.
+- Catatan: FP1-FP4/FP6 dan Prediksi ML menunggu data cuaca + model (Fase 6); Validasi menunggu Fase 8.
+  Sensor belum bisa menyaring agregat harian (hanya confidence), didokumentasikan di UI.
 
 ## Fase 6: Machine Learning (B ML, A pipeline)
 - [ ] `features.py` (fitur dan label PRD Bagian 10), `train.py` (RF, GBT; split waktu; class weight), `predict.py`.

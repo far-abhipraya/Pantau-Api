@@ -368,6 +368,124 @@ export type UploadComplete = {
   pipeline_job_id?: string | null;
 };
 
+// --- Analitik --------------------------------------------------------------
+
+export type AnalyticsWindowDays = 30 | 90 | 365 | 0;
+export type AnalyticsConf = "all" | "high";
+export type AnalyticsGranularity = "day" | "week" | "month";
+
+export type AnalyticsKpi = {
+  today: number;
+  yesterday: number;
+  last_7d: number;
+  prev_7d: number;
+  last_30d: number;
+  prev_30d: number;
+  top_province: { name: string; count: number } | null;
+  high_confidence_30d: number;
+  avg_frp_30d: number;
+  meta: {
+    computed_at: string;
+    conf: string;
+    max_date: string | null;
+    history_start: string | null;
+    n_days: number;
+  };
+};
+
+export type AnalyticsTrendPoint = { date: string; count: number; high_count: number };
+
+export type AnalyticsTrend = {
+  points: AnalyticsTrendPoint[];
+  meta: {
+    computed_at: string;
+    granularity: AnalyticsGranularity;
+    days: number;
+    province: string | null;
+    conf: string;
+    n: number;
+  };
+};
+
+export type AnalyticsRankingItem = {
+  rank: number;
+  province: string;
+  count: number;
+  share_percent: number;
+  previous: number;
+  delta_percent: number | null;
+};
+
+export type AnalyticsRanking = {
+  items: AnalyticsRankingItem[];
+  meta: { computed_at: string; days: number; conf: string; total: number; n: number };
+};
+
+export type AnalyticsSeasonality = {
+  months: string[];
+  years: number[];
+  by_year: Record<string, number[]>;
+  by_province: Record<string, number[]>;
+  meta: {
+    computed_at: string;
+    province: string | null;
+    conf: string;
+    n_years: number;
+    n_provinces: number;
+    years_covered: string | null;
+  };
+};
+
+export type AnalyticsYearCompare = {
+  years: { year: number; points: { doy: number; cum: number }[] }[];
+  current_year?: number;
+  historical_mean: { doy: number; cum: number }[];
+  meta: { computed_at: string; province: string | null; conf: string; n_years: number };
+};
+
+export type AnalyticsTopGrid = {
+  items: {
+    grid_lat: number;
+    grid_lon: number;
+    province: string | null;
+    count: number;
+    high_count: number;
+  }[];
+  meta: { computed_at: string; days: number; province: string | null; conf: string; n: number };
+};
+
+export type InsightCard = {
+  id: string;
+  type: "tren" | "wilayah" | "musiman" | string;
+  score: number;
+  title: string;
+  key_figure: string;
+  sentence: string;
+  confidence: "Tinggi" | "Sedang" | "Rendah";
+  evidence: Record<string, unknown>;
+  anchor: string;
+};
+
+export type AnalyticsInsights = {
+  cards: InsightCard[];
+  meta: {
+    computed_at: string;
+    days: number;
+    province: string | null;
+    conf: string;
+    scope: string;
+    n: number;
+    skipped: { id: string; reason: string }[];
+  };
+};
+
+export type WeatherCorrelation = {
+  available: boolean;
+  reason?: string;
+  needs?: string[];
+  computed_at: string;
+};
+
 // --- Transport -------------------------------------------------------------
 
 type RequestOptions = { signal?: AbortSignal };
@@ -484,4 +602,41 @@ export const api = {
     post<{ saved: boolean; name: string; path: string }>("/preprocessing/configs", { name, config }, undefined, options),
   savedConfigs: (options?: RequestOptions) =>
     get<{ items: { name: string; path: string; config: PreprocessConfig }[] }>("/preprocessing/configs", {}, options),
+
+  // Analitik
+  analyticsKpi: (conf: AnalyticsConf = "all", options?: RequestOptions) =>
+    get<AnalyticsKpi>("/analytics/kpi", { conf }, options),
+  analyticsTrend: (
+    params: {
+      granularity: AnalyticsGranularity;
+      days: AnalyticsWindowDays;
+      province?: string;
+      conf: AnalyticsConf;
+    },
+    options?: RequestOptions,
+  ) => get<AnalyticsTrend>("/analytics/trend", params, options),
+  analyticsRanking: (
+    params: { days: AnalyticsWindowDays; limit?: number; conf: AnalyticsConf },
+    options?: RequestOptions,
+  ) => get<AnalyticsRanking>("/analytics/ranking", params, options),
+  analyticsSeasonality: (
+    params: { province?: string; conf: AnalyticsConf },
+    options?: RequestOptions,
+  ) => get<AnalyticsSeasonality>("/analytics/seasonality", params, options),
+  analyticsYearCompare: (
+    params: { province?: string; conf: AnalyticsConf },
+    options?: RequestOptions,
+  ) => get<AnalyticsYearCompare>("/analytics/year-compare", params, options),
+  analyticsTopGrid: (
+    params: { days: AnalyticsWindowDays; limit?: number; province?: string; conf: AnalyticsConf },
+    options?: RequestOptions,
+  ) => get<AnalyticsTopGrid>("/analytics/top-grid", params, options),
+  analyticsInsights: (
+    params: { days: AnalyticsWindowDays; province?: string; conf: AnalyticsConf },
+    options?: RequestOptions,
+  ) => get<AnalyticsInsights>("/analytics/insights", params, options),
+  analyticsWeather: (options?: RequestOptions) =>
+    get<WeatherCorrelation>("/analytics/weather-correlation", {}, options),
+  analyticsRefresh: (options?: RequestOptions) =>
+    post<{ job_id: string; status: string }>("/analytics/refresh", undefined, undefined, options),
 };

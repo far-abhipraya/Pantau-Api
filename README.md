@@ -37,3 +37,15 @@ Laporan job: `C:\karhutla-data\serving\pipeline_run_summary.json`, `serving_meta
   sebagai job Spark asinkron (satu job aktif), laporan funnel sebelum/sesudah.
 - Job Spark dijalankan lewat antrian tunggal (`backend/app/pipeline/spark_runner.py`); status/log dapat dipantau di
   Riwayat Job. Memori driver diturunkan otomatis bila RAM bebas kurang (tidak pernah dinaikkan).
+
+## Halaman Analitik (`/analytics`)
+- Hero KPI nasional (hari ini, 7/30 hari, provinsi tertinggi, rata-rata FRP) dengan delta terhadap periode sebelumnya.
+- Insight utama rule-based (tren 7 hari, konsentrasi wilayah, puncak musiman) + bukti angka yang dapat dibuka.
+- Bilah filter lengket: rentang 30/90/365 hari atau semua, provinsi, confidence (semua/tinggi), tombol
+  "Perbarui agregasi" (`POST /api/analytics/refresh` -> job `aggregate.py`).
+- Seksi Ringkasan (tren harian/mingguan/bulanan + kumulatif tahunan), Wilayah (ranking, choropleth, top grid),
+  Musiman (heatmap bulan x tahun / bulan x provinsi), Faktor Pengaruh (status FP1-FP6), Cuaca, Prediksi ML, Validasi.
+- Endpoint: `GET /api/analytics/{kpi,trend,ranking,seasonality,year-compare,top-grid,insights,weather-correlation}`.
+  Semua dibaca dari serving layer DuckDB (`agg_daily_province`, `agg_daily_grid`), tanpa perhitungan di klien.
+- Lapisan diagnostik (FP1-FP4, FP6) dan Prediksi ML ditandai jujur belum tersedia: membutuhkan data cuaca dan model
+  pada Fase 6. Tidak ada angka prediksi/anomali yang dikarang.

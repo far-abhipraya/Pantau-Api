@@ -15,6 +15,9 @@ def test_analytics_kpi():
     assert "last_7d" in data
     assert "last_30d" in data
     assert "top_province" in data
+    assert "yesterday" in data
+    assert "prev_7d" in data
+    assert "prev_30d" in data
     assert data["meta"]["conf"] == "all"
 
 
@@ -70,6 +73,14 @@ def test_analytics_top_grid():
     data = response.json()
     assert "items" in data
     assert len(data["items"]) <= 5
+
+
+def test_analytics_top_grid_province_filter():
+    response = client.get("/api/analytics/top-grid?days=365&limit=5&province=Kalimantan Tengah")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["meta"]["province"] == "Kalimantan Tengah"
+    assert all(item["province"] == "Kalimantan Tengah" for item in data["items"])
 
 
 def test_analytics_weather_correlation():

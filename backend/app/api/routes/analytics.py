@@ -29,6 +29,13 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
+def _num(value: int | float) -> str:
+    """Format angka gaya Indonesia: 1.234.567 dan 51,5."""
+    if isinstance(value, float):
+        return f"{value:,.1f}".replace(",", "\x00").replace(".", ",").replace("\x00", ".")
+    return f"{value:,}".replace(",", ".")
+
+
 def _check_window(days: int) -> None:
     if days not in DAY_WINDOWS:
         raise HTTPException(status_code=422, detail=f"days harus salah satu dari {list(DAY_WINDOWS)}")
@@ -77,6 +84,11 @@ def kpi(
               (SELECT coalesce(sum(c), 0) FROM base WHERE date = (SELECT max_date FROM bounds)) AS today,
               (SELECT coalesce(sum(c), 0) FROM base WHERE date > (SELECT max_date FROM bounds) - 7) AS last_7d,
               (SELECT coalesce(sum(c), 0) FROM base WHERE date > (SELECT max_date FROM bounds) - 30) AS last_30d,
+              (SELECT coalesce(sum(c), 0) FROM base WHERE date = (SELECT max_date FROM bounds) - 1) AS yesterday,
+              (SELECT coalesce(sum(c), 0) FROM base WHERE date > (SELECT max_date FROM bounds) - 14
+                 AND date <= (SELECT max_date FROM bounds) - 7) AS prev_7d,
+              (SELECT coalesce(sum(c), 0) FROM base WHERE date > (SELECT max_date FROM bounds) - 60
+                 AND date <= (SELECT max_date FROM bounds) - 30) AS prev_30d,
               (SELECT coalesce(sum(frp_sum), 0) FROM base WHERE date > (SELECT max_date FROM bounds) - 30)
                 / nullif((SELECT coalesce(sum(c), 0) FROM base WHERE date > (SELECT max_date FROM bounds) - 30), 0) AS avg_frp_30d
             """,
@@ -104,8 +116,11 @@ def kpi(
         max_date = row["max_date"]
         return {
             "today": int(row["today"] or 0),
+            "yesterday": int(row["yesterday"] or 0),
             "last_7d": int(row["last_7d"] or 0),
+            "prev_7d": int(row["prev_7d"] or 0),
             "last_30d": int(row["last_30d"] or 0),
+            "prev_30d": int(row["prev_30d"] or 0),
             "top_province": {"name": top[0]["province"], "count": int(top[0]["c"])} if top else None,
             "high_confidence_30d": int(high["c"] or 0),
             "avg_frp_30d": round(float(row["avg_frp_30d"] or 0), 2),
@@ -268,8 +283,10 @@ def seasonality(
             SELECT province, month(date) AS m, sum({column}) AS c
             FROM agg_daily_province
             WHERE province <> 'UNKNOWN'
+              {"AND province = ?" if province else ""}
             GROUP BY province, m
             """,
+            [province] if province else None,
         )
         totals: dict[str, int] = {}
         per_province: dict[str, list[float]] = {}
@@ -358,10 +375,13 @@ def year_compare(
 def top_grid(
     days: Annotated[int, Query(description="7, 30, 90, 365, atau 0 (semua)")] = 30,
     limit: Annotated[int, Query(ge=1, le=50)] = 10,
+    province: Annotated[str | None, Query()] = None,
     conf: Annotated[str, Query(description="all | high")] = "all",
 ) -> dict[str, Any]:
     _check_window(days)
     column = _col(conf)
+    province_clause = "AND province = ?" if province else ""
+    base_params: list[Any] = [province] if province else []
 
     def produce() -> dict[str, Any]:
         rows = _rows(
@@ -370,11 +390,12 @@ def top_grid(
                    sum({column}) AS c, sum(high_count) AS high_count
             FROM agg_daily_grid
             WHERE (? = 0 OR date > (SELECT max(date) FROM agg_daily_grid) - ?)
+              {province_clause}
             GROUP BY grid_lat, grid_lon
             ORDER BY c DESC
             LIMIT ?
             """,
-            [days, days, limit],
+            [days, days, *base_params, limit],
         )
         return {
             "items": [
@@ -387,10 +408,10 @@ def top_grid(
                 }
                 for row in rows
             ],
-            "meta": {"computed_at": _now(), "days": days, "conf": conf, "n": len(rows)},
+            "meta": {"computed_at": _now(), "days": days, "province": province, "conf": conf, "n": len(rows)},
         }
 
-    return serving.cached(("analytics-top-grid", days, limit, conf), produce)
+    return serving.cached(("analytics-top-grid", days, limit, province, conf), produce)
 
 
 @router.get("/weather-correlation", summary="Korelasi cuaca vs hotspot (butuh data cuaca)")
@@ -443,12 +464,12 @@ def insights(
                     "type": "tren",
                     "score": min(100, magnitude),
                     "title": "Tren 7 hari",
-                    "key_figure": f"{'+' if (pct or 0) >= 0 else ''}{pct}%",
+                    "key_figure": f"{'+' if (pct or 0) >= 0 else ''}{_num(float(pct or 0))}%",
                     "sentence": (
-                        f"Hotspot {scope_label} {direction} {abs(pct)}% dalam 7 hari terakhir dibanding "
-                        f"7 hari sebelumnya ({recent:,} vs {prior:,}).".replace(",", ".")
+                        f"Hotspot {scope_label} {direction} {_num(abs(pct or 0))}% dalam 7 hari terakhir "
+                        f"dibanding 7 hari sebelumnya ({_num(recent)} vs {_num(prior)})."
                         if pct is not None
-                        else f"Periode sebelumnya tanpa hotspot; 7 hari terakhir {recent:,} hotspot.".replace(",", ".")
+                        else f"Periode sebelumnya tanpa hotspot; 7 hari terakhir {_num(recent)} hotspot."
                     ),
                     "confidence": ("Tinggi" if (recent + prior) >= 500 and magnitude >= 40
                                    else "Sedang" if (recent + prior) >= 100 and magnitude >= 25 else "Rendah"),
@@ -475,7 +496,7 @@ def insights(
             [days, days],
         )
         total = sum(int(row["c"] or 0) for row in ranking_rows)
-        if total >= 100 and len(ranking_rows) >= 3:
+        if not province and total >= 100 and len(ranking_rows) >= 3:
             top3 = ranking_rows[:3]
             share = round(sum(int(row["c"] or 0) for row in top3) / total * 100, 1)
             cards.append(
@@ -484,10 +505,10 @@ def insights(
                     "type": "wilayah",
                     "score": min(100, share),
                     "title": "Konsentrasi wilayah",
-                    "key_figure": f"{share}%",
+                    "key_figure": f"{_num(float(share))}%",
                     "sentence": (
                         f"{top3[0]['province']}, {top3[1]['province']}, dan {top3[2]['province']} "
-                        f"menyumbang {share}% hotspot pada periode ini."
+                        f"menyumbang {_num(share)}% hotspot pada periode ini."
                     ),
                     "confidence": ("Tinggi" if total >= 500 and share >= 50
                                    else "Sedang" if total >= 100 and share >= 35 else "Rendah"),
@@ -533,9 +554,9 @@ def insights(
                     "key_figure": MONTHS_ID[peak_month],
                     "sentence": (
                         f"Secara historis, puncak hotspot terjadi pada bulan {MONTHS_ID[peak_month]} "
-                        f"({int(peak['c'] or 0):,} hotspot, "
-                        f"{round(int(peak['c'] or 0) / month_total * 100, 1)}% dari total); "
-                        f"saat ini {position} periode puncak.".replace(",", ".")
+                        f"({_num(int(peak['c'] or 0))} hotspot, "
+                        f"{_num(round(int(peak['c'] or 0) / month_total * 100, 1))}% dari total); "
+                        f"saat ini {position} periode puncak."
                     ),
                     "confidence": "Tinggi" if month_total >= 5000 else "Sedang",
                     "evidence": {
