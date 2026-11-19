@@ -26,6 +26,7 @@ TABLE_GLOBS: dict[str, Path] = {
     "grid_latest_0_25": SERVING_DIR / "grid_latest_0_25",
     "agg_daily_grid": SERVING_DIR / "agg_daily_grid",
     "agg_daily_province": SERVING_DIR / "agg_daily_province",
+    "clean_weather": SERVING_DIR / "clean/weather",
     "risk_prediction": SERVING_DIR / "risk_prediction",
 }
 

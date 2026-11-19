@@ -37,6 +37,7 @@ from pyspark.sql import DataFrame, SparkSession  # noqa: E402
 from pyspark.sql import functions as F  # noqa: E402
 
 CLEAN_PATH = f"{settings.HDFS_URI}{settings.HDFS_BASE_PATH}/clean/hotspot"
+WEATHER_PATH = f"{settings.HDFS_URI}{settings.HDFS_BASE_PATH}/raw/weather"
 SERVING_DIR = Path(settings.SERVING_DIR)
 WINDOWS = (24, 48, 168)
 RESOLUTIONS = (("1_0", 1.0), ("0_5", 0.5), ("0_25", 0.25))
@@ -89,6 +90,40 @@ def _daily_agg(df: DataFrame, group_cols: list[str]) -> DataFrame:
         F.round(F.max("frp"), 2).alias("frp_max"),
         F.round(F.avg("frp"), 2).alias("frp_avg"),
     )
+
+
+def _weather_agg(spark: SparkSession) -> DataFrame | None:
+    """Bersihkan data cuaca mentah dari raw/weather -> clean/weather untuk serving layer."""
+    try:
+        raw = (
+            spark.read.option("header", True)
+            .option("inferSchema", True)
+            .csv(WEATHER_PATH)
+        )
+        if "date" not in raw.columns:
+            print("[WARN] weather: kolom date tidak ditemukan, lewati")
+            return None
+    except Exception as exc:  # noqa: BLE001
+        print(f"[WARN] weather: tidak bisa baca {WEATHER_PATH}: {exc}")
+        return None
+
+    weather = (
+        raw.select(
+            F.to_date("date").alias("date"),
+            F.col("station_name"),
+            F.col("latitude").cast("double").alias("latitude"),
+            F.col("longitude").cast("double").alias("longitude"),
+            F.col("temp_max").cast("double").alias("temp_max"),
+            F.col("temp_min").cast("double").alias("temp_min"),
+            F.col("temp_mean").cast("double").alias("temp_mean"),
+            F.col("precipitation").cast("double").alias("precipitation"),
+            F.col("wind_speed_max").cast("double").alias("wind_speed_max"),
+        )
+        .filter(F.col("date").isNotNull() & F.col("station_name").isNotNull())
+        .dropDuplicates(["date", "station_name"])
+        .orderBy("date", "station_name")
+    )
+    return weather
 
 
 def build(spark: SparkSession, job_id: str) -> dict:
@@ -199,6 +234,14 @@ def build(spark: SparkSession, job_id: str) -> dict:
     outputs["agg_daily_province"] = _write(
         daily_province, "agg_daily_province", partitions=1
     )
+
+    weather = _weather_agg(spark)
+    if weather is not None:
+        outputs["clean/weather"] = _write(weather, "clean/weather", partitions=1)
+        weather_rows = weather.count()
+    else:
+        weather_rows = 0
+    print(f"[INFO] clean/weather: {weather_rows:,} baris -> {SERVING_DIR / 'clean/weather'}")
 
     meta = {
         "job_id": job_id,

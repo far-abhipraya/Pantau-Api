@@ -428,12 +428,34 @@ def top_grid(
 
 @router.get("/weather-correlation", summary="Korelasi cuaca vs hotspot (butuh data cuaca)")
 def weather_correlation() -> dict[str, Any]:
-    return {
-        "available": False,
-        "reason": "Data cuaca belum lengkap di serving layer (clean/weather kosong pada HDFS).",
-        "needs": ["raw/weather CHIRPS + ERA5 terisi", "preprocessing clean/weather", "features/grid_daily (Fase 6)"],
-        "computed_at": _now(),
-    }
+    tables = serving.available_tables()
+    weather_available = tables.get("clean_weather", False)
+    if not weather_available:
+        return {
+            "available": False,
+            "reason": "Data cuaca belum lengkap di serving layer (clean/weather kosong pada HDFS).",
+            "needs": ["raw/weather CHIRPS + ERA5 terisi", "preprocessing clean/weather", "features/grid_daily (Fase 6)"],
+            "computed_at": _now(),
+        }
+
+    def produce() -> dict[str, Any]:
+        rows = serving.query(
+            """
+            SELECT date, station_name, latitude, longitude, temp_max, temp_min,
+                   temp_mean, precipitation, wind_speed_max
+            FROM clean_weather
+            ORDER BY date DESC, station_name
+            LIMIT 1000
+            """
+        )
+        return {
+            "available": True,
+            "rows": len(rows),
+            "data": rows,
+            "computed_at": _now(),
+        }
+
+    return serving.cached(("analytics-weather-correlation",), produce)
 
 
 @router.get("/insights", summary="Kartu insight otomatis (rule-based, bahasa asosiasi)")

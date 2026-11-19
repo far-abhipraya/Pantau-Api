@@ -9,6 +9,7 @@ Aturan (AGENTS.md):
 from __future__ import annotations
 
 import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -33,17 +34,48 @@ def _binary() -> str:
     return binary
 
 
-def run(args: list[str], timeout: int = 60) -> subprocess.CompletedProcess[str]:
-    command = [_binary(), "dfs", *args]
-    proc = subprocess.run(
-        command,
+def _shell_arg(value: str) -> str:
+    """Kutip argumen agar utuh melewati pembungkus `hdfs.cmd` di Windows.
+
+    Skrip batch Hadoop memecah argumen yang mengandung `=` (mis. partisi
+    `date=2026-11-19`) dan tidak membuat direktori induk bertingkat. Hanya
+    argumen bermasalah yang dikutip: mengutip subperintah seperti `dfs` atau
+    `-put` membuat skrip batch salah menafsirkan argumen.
+    """
+    if os.name == "nt" and ("=" in value or " " in value):
+        return f'"{value}"'
+    return value
+
+
+def _command(args: list[str]) -> list[str] | str:
+    argv = [_binary(), "dfs", *args]
+    if os.name == "nt":
+        return " ".join(_shell_arg(arg) for arg in argv)
+    return argv
+
+
+def _execute(args: list[str], timeout: int) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        _command(args),
         capture_output=True,
         text=True,
         env=_env(),
         timeout=timeout,
+        shell=os.name == "nt",
     )
+
+
+def run(args: list[str], timeout: int = 60) -> subprocess.CompletedProcess[str]:
+    proc = _execute(args, timeout)
     if proc.returncode != 0:
-        raise HdfsError((proc.stderr or proc.stdout).strip() or f"gagal: {command}")
+        raise HdfsError(
+            (proc.stderr or proc.stdout).strip() or f"gagal: {' '.join(args)}"
+        )
+    # `hdfs.cmd` di Windows dapat mengembalikan 0 walau perintah gagal
+    # (mis. path tidak ditemukan). Pesan error dikenali dari stderr.
+    stderr = (proc.stderr or "").strip()
+    if stderr and re.search(r"(^|\n)(put|ls|mkdir|rm|cat|du|count|mv|cp):", stderr):
+        raise HdfsError(stderr)
     return proc
 
 
@@ -54,13 +86,7 @@ def exists(path: str, timeout: int = 30) -> bool:
     keluarnya tidak dapat diandalkan dan pernah menggantung.
     """
     try:
-        proc = subprocess.run(
-            [_binary(), "dfs", "-ls", path],
-            capture_output=True,
-            text=True,
-            env=_env(),
-            timeout=timeout,
-        )
+        proc = _execute(["-ls", path], timeout)
     except (OSError, subprocess.SubprocessError):
         return False
     expected = path.rstrip("/")
@@ -85,7 +111,18 @@ def is_within_base(path: str) -> bool:
 
 
 def put(local_path: Path, hdfs_path: str) -> None:
+    """Unggah file ke HDFS, pastikan direktori tujuan ada lalu verifikasi.
+
+    `hdfs dfs -put` tidak membuat direktori induk bertingkat pada Hadoop 3.5.0
+    di Windows dan dapat melapor sukses (exit code 0) walau gagal, jadi hasil
+    unggahan selalu dicek ulang.
+    """
+    parent = hdfs_path.rsplit("/", 1)[0]
+    if parent:
+        run(["-mkdir", "-p", parent], timeout=120)
     run(["-put", "-f", str(local_path), hdfs_path], timeout=600)
+    if not exists(hdfs_path):
+        raise HdfsError(f"unggahan tidak terverifikasi di HDFS: {hdfs_path}")
 
 
 def du_bytes(path: str, timeout=60) -> int:

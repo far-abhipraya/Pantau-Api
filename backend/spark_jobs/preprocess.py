@@ -43,6 +43,8 @@ from pyspark.storagelevel import StorageLevel  # noqa: E402
 DEFAULT_INPUTS = [
     f"{settings.HDFS_URI}{settings.HDFS_BASE_PATH}/raw/firms_hist/*.csv",
     f"{settings.HDFS_URI}{settings.HDFS_BASE_PATH}/raw/firms_nrt/*.csv",
+    # NiFi menyimpan NRT di partisi date=YYYY-MM-DD (FR-N1); ikut dibaca.
+    f"{settings.HDFS_URI}{settings.HDFS_BASE_PATH}/raw/firms_nrt/*/*.csv",
 ]
 CLEAN_OUTPUT = f"{settings.HDFS_URI}{settings.HDFS_BASE_PATH}/clean/hotspot"
 SUMMARY_PATH = Path(settings.SERVING_DIR) / "pipeline_run_summary.json"
