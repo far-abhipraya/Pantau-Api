@@ -314,6 +314,17 @@ function ReadyBridge({ onReady }: { onReady: (map: L.Map) => void }) {
   return null;
 }
 
+function MapCleanup() {
+  const map = useMap();
+  useEffect(
+    () => () => {
+      map.remove();
+    },
+    [map],
+  );
+  return null;
+}
+
 function MapRuntime() {
   return null;
 }
@@ -336,6 +347,7 @@ export default function MapCanvas({
 
   return (
     <MapContainer
+      key={basemap}
       center={[-2.5, 118]}
       zoom={5}
       minZoom={3}
@@ -354,6 +366,7 @@ export default function MapCanvas({
       />
       <ViewportBridge onChange={onViewportChange} />
       <ReadyBridge onReady={onMapReady} />
+      <MapCleanup />
       {showGrid && grid.length > 0 ? <GridLayer features={grid} /> : null}
       {showPoints && points.length > 0 ? <PointsLayer points={points} /> : null}
       {showProvinces ? <ProvinceLayer data={provinces} onSelect={onProvinceSelect} /> : null}
