@@ -1,59 +1,230 @@
 # PantauApi
 
-Platform big data (Hadoop HDFS, Spark, NiFi) untuk memantau hotspot karhutla Indonesia dan memperkirakan risikonya.
+Platform Big Data (Hadoop HDFS + Spark + NiFi + FastAPI + Next.js) untuk memantau dan memprediksi risiko kebakaran hutan dan lahan (karhutla) di Indonesia menggunakan data hotspot NASA FIRMS.
 
-Tiga halaman: Peta (`/`), Data & Pre-processing (`/data`), Analitik (`/analytics`).
+Tiga halaman:
+- **Peta** (`/`) — titik hotspot, agregasi grid, dan lapisan risiko prediksi.
+- **Data & Pre-processing** (`/data`) — sumber data, impor folder, upload manual, profil, dan riwayat job Spark.
+- **Analitik** (`/analytics`) — KPI, tren, ranking provinsi, musiman, faktor pengaruh, cuaca, prediksi ML, dan validasi referensi.
 
-## Dokumen
-- `AGENTS.md`: aturan agent (selalu aktif); `.agents/rules/`: aturan terperinci; `.agents/workflows/start-phase.md`: `/start-phase <nomor>`
-- `docs/PRD.md` (v1.2), `docs/UI_SPEC.md`, `docs/DESIGN.md`, `docs/STITCH_PROMPTS.md`
-- `docs/ENVIRONMENT.md`, `docs/TASKS.md`, `docs/DATA_SOURCES.md`, `docs/MODEL.md`
-- `docs/ARCHITECTURE.md`, `docs/windows-notes.md`, `docs/DEMO.md`
+Stack: Next.js 16 (TypeScript, Tailwind, react-leaflet, ECharts) | FastAPI + SQLAlchemy + SQLite | PySpark/Spark SQL/MLlib | HDFS 3.5.0 | NiFi 1.28.1 | DuckDB + Parquet lokal.
 
-## Mulai Cepat
-1. Salin `.env.example` menjadi `.env` dan isi.
-2. CMD Administrator: `scripts\start_hdfs.bat`
-3. `python scripts\check_env.py`
-4. Mulai Fase 0 di `docs/TASKS.md`.
+---
 
-## Menjalankan Layanan
-```bat
-REM Pre-processing + agregasi serving layer (satu job Spark pada satu waktu)
-spark-submit --master local[2] --driver-memory 3g backend\spark_jobs\preprocess.py
-spark-submit --master local[2] --driver-memory 3g backend\spark_jobs\aggregate.py
+## Syarat Sistem (Windows)
 
-REM API + UI
-cd backend && uvicorn app.main:app --reload --port 8000
-cd frontend && npm run dev
+| Komponen | Versi | Catatan |
+|----------|-------|---------|
+| Java | 17 | Sudah terpasang native di Windows |
+| Hadoop | 3.5.0 | `C:\hadoop-3.5.0`, hanya HDFS (tanpa YARN) |
+| Spark | 4.2.0 | `C:\spark-4.2.0-bin-hadoop3` |
+| Python | 3.14 | Native di Windows |
+| Node.js / npm | Terbaru | Untuk frontend Next.js 16 |
+| RAM | Minimal 8 GB disarankan | Spark driver diberi batas agar tidak OOM |
+
+**Peringatan penting (AGENTS.md):**
+- Jangan pernah menjalankan `hdfs namenode -format`.
+- Jangan mengubah/hapus path HDFS lama: `/hr-data`, `/warehouse`, `/user/alfarel`, `/test`, `/testupload`. Data proyek hanya di `/karhutla/`.
+- Jangan mengedit `core-site.xml`, `hdfs-site.xml`, `yarn-site.xml`, `mapred-site.xml`, atau `hadoop-env.cmd` tanpa persetujuan.
+- Setiap proses Hadoop/Spark perlu `HADOOP_USER_NAME=hadoop`.
+- Satu job Spark pada satu waktu (`local[4]`, driver 4 GB).
+- Kode, data, dan temp harus di path **tanpa spasi**: `C:\projects\karhutla-watch` dan `C:\karhutla-data`.
+- Tidak ada autentikasi dan tidak ada streaming sungguhan. Data tidak boleh dikarang.
+
+---
+
+## Langkah Awal (Dari Nol)
+
+### 1. Clone repositori
+
+```powershell
+git clone https://github.com/far-abhipraya/Pantau-Api.git
+cd Pantau-Api
 ```
-Peta: http://localhost:3000 · API/OpenAPI: http://localhost:8000/docs
-Laporan job: `C:\karhutla-data\serving\pipeline_run_summary.json`, `serving_meta.json`, `profiling_report.json`.
 
-## Halaman Data (`/data`)
-- Strip status (total baris mentah + indikator 1 juta, ingest terakhir, status Spark, karantina), tab **Sumber Data**,
-  **Pre-processing**, dan **Riwayat Job**.
-- Akuisisi: penjadwal impor folder `inbox` (interval `INBOX_SCAN_INTERVAL_SEC`) + tombol "Impor folder",
-  dan tombol sekunder "Tambah data" (upload bertahap -> deteksi format -> `hdfs dfs -put` -> pipeline).
-- Pre-processing: profil dataset, stepper konfigurasi (`GET /api/preprocessing/config-schema`), jalankan pipeline
-  sebagai job Spark asinkron (satu job aktif), laporan funnel sebelum/sesudah.
-- Job Spark dijalankan lewat antrian tunggal (`backend/app/pipeline/spark_runner.py`); status/log dapat dipantau di
-  Riwayat Job. Memori driver diturunkan otomatis bila RAM bebas kurang (tidak pernah dinaikkan).
+### 2. Siapkan environment variabel
 
-## Halaman Analitik (`/analytics`)
-- Hero KPI nasional (hari ini, 7/30 hari, provinsi tertinggi, rata-rata FRP) dengan delta terhadap periode sebelumnya.
-- Insight utama rule-based (tren 7 hari, konsentrasi wilayah, puncak musiman) + bukti angka yang dapat dibuka.
-- Bilah filter lengket: rentang 30/90/365 hari atau semua, provinsi, confidence (semua/tinggi), tombol
-  "Perbarui agregasi" (`POST /api/analytics/refresh` -> job `aggregate.py`).
-- Seksi Ringkasan (tren harian/mingguan/bulanan + kumulatif tahunan), Wilayah (ranking, choropleth, top grid),
-  Musiman (heatmap bulan x tahun / bulan x provinsi), Faktor Pengaruh (status FP1-FP6), Cuaca, Prediksi ML, Validasi.
-- Prediksi ML: metrik uji (AUC-ROC, AUC-PR, precision, recall, F1), confusion matrix, feature importance,
-  perbandingan baseline persistensi, sebaran kategori risiko, dan 10 grid risiko tertinggi; tombol
-  "Perbarui prediksi" mengantrekan `POST /api/analytics/model/refresh`.
-- Endpoint: `GET /api/analytics/{kpi,trend,ranking,seasonality,year-compare,top-grid,insights,weather-correlation,model}`.
-  Semua dibaca dari serving layer DuckDB (`agg_daily_province`, `agg_daily_grid`, `risk_prediction`), tanpa
-  perhitungan di klien.
-- Lapisan diagnostik cuaca (FP1-FP3) tetap ditandai belum tersedia karena data ERA5 hanya 10 stasiun 2022-2024;
-  FP4/FP6 tersedia lewat feature importance model. Tidak ada angka prediksi/anomali yang dikarang.
+Salin contoh dan isi nilai rahasia (contoh: `FIRMS_MAP_KEY` dari NASA FIRMS):
+
+```powershell
+copy .env.example .env
+```
+
+Edit `.env` sesuai environment lokal. Path penting sudah diatur default ke:
+- `HDFS_BASE_PATH=/karhutla`
+- `DATA_DIR=C:/karhutla-data`
+- `INBOX_DIR=C:/karhutla-data/inbox`
+- `SERVING_DIR=C:/karhutla-data/serving`
+
+### 3. Verifikasi lingkungan
+
+```powershell
+python scripts\check_env.py
+```
+
+Pastikan semua pemeriksaan lulus (Java, Hadoop, Spark, Python, Node, HDFS, port).
+
+### 4. Nyalakan HDFS
+
+Jalankan **CMD sebagai Administrator**:
+
+```bat
+scripts\start_hdfs.bat
+```
+
+Verifikasi NameNode: `http://localhost:9870`
+
+> Jika DataNode tidak aktif (semua blok "missing"), periksa log di `C:\hadoop-3.5.0\logs` dan pastikan tidak ada proses Java lain yang memegang port 9000/9870/50010/50075. Jangan jalankan `hdfs namenode -format`.
+
+### 5. Nyalakan Backend (FastAPI)
+
+```powershell
+cd backend
+$env:HADOOP_USER_NAME="hadoop"
+python -m uvicorn app.main:app --reload --port 8000
+```
+
+Verifikasi: `http://localhost:8000/api/health` harus mengembalikan `status: ok` dan `hdfs.reachable: true`.
+
+OpenAPI dokumentasi: `http://localhost:8000/docs`
+
+### 6. Nyalakan Frontend (Next.js)
+
+```powershell
+cd frontend
+npm run dev
+```
+
+Verifikasi: `http://localhost:3000` (Peta) dapat dimuat.
+
+---
+
+## Alur Data (Pipeline)
+
+```
+1. Akuisisi
+   ├─ Impor folder manual: C:\karhutla-data\inbox  -> POST /api/ingest/inbox
+   ├─ Upload manual bertahap: POST /api/datasets/upload/*
+   └─ NRT FIRMS (fallback NiFi): POST /api/ingest/firms-nrt
+2. Pre-processing (Spark job: preprocess.py)
+   └─ Output: /karhutla/clean/hotspot (Parquet di HDFS)
+3. Serving layer (Spark job: aggregate.py)
+   └─ Output: C:\karhutla-data\serving\ (Parquet + DuckDB + SQLite meta.db)
+4. API baca dari serving layer (tidak hit Spark secara langsung)
+```
+
+### Menjalankan pre-processing + agregasi
+
+```powershell
+cd backend
+# Pre-processing (satu job pada satu waktu)
+python -m uvicorn app.main:app --reload --port 8000 &  # backend harus sudah nyala
+Invoke-RestMethod -Uri "http://localhost:8000/api/preprocessing/run" -Method Post -Body (@{ config = @{} } | ConvertTo-Json) -ContentType "application/json"
+
+# Setelah pre-processing selesai, jalankan agregasi serving layer
+Invoke-RestMethod -Uri "http://localhost:8000/api/analytics/refresh" -Method Post
+```
+
+Pantau status job di `http://localhost:8000/api/jobs` atau halaman `/data` -> **Riwayat Job**.
+
+Hasil serving layer tersimpan di `C:\karhutla-data\serving\` dan metadata di `C:\karhutla-data\serving\meta.db`.
+
+---
+
+## Endpoint API Utama
+
+| Metode | Path | Deskripsi |
+|--------|------|-----------|
+| GET | `/api/health` | Status backend, HDFS, Spark, dan serving layer |
+| GET | `/api/sources` | Status sumber data, total baris, dan freshness |
+| POST | `/api/ingest/inbox` | Impor folder inbox sekarang |
+| POST | `/api/ingest/firms-nrt` | Unduh NRT FIRMS manual (fallback NiFi) |
+| POST | `/api/ingest/compact-nrt` | Kompaksi file kecil NRT (Spark) |
+| POST | `/api/preprocessing/run` | Jalankan pre-processing (job Spark asinkron) |
+| GET | `/api/preprocessing/latest` | Laporan pre-processing terakhir |
+| POST | `/api/analytics/refresh` | Jalankan ulang agregasi serving layer |
+| GET | `/api/analytics/kpi` | KPI hero peta dan analitik |
+| GET | `/api/map/risk?min_score=0.75` | Grid risiko prediksi 7 hari |
+| GET | `/api/jobs` | Riwayat dan status job Spark |
+
+---
+
+## Akuisisi NRT FIRMS (Tanpa NiFi)
+
+Karena NiFi membutuhkan RAM besar (~1,5 GB) dan belum dijalankan di mesin development, endpoint fallback tersedia:
+
+```powershell
+Invoke-RestMethod -Uri "http://localhost:8000/api/ingest/firms-nrt" -Method Post -Body (@{ days = 2 } | ConvertTo-Json) -ContentType "application/json"
+```
+
+Unduh data FIRMS NRT via API NASA langsung dan unggah ke `/karhutla/raw/firms_nrt/date=YYYY-MM-DD/` di HDFS.
+
+Lalu jalankan pre-processing dan agregasi agar data terbaru muncul di UI.
+
+---
+
+## NiFi (Opsional, Fase 7)
+
+NiFi belum dijalankan di mesin development karena keterbatasan RAM (~1,5 GB diperlukan, hanya ~0.6–2.4 GB tersedia). Flow sudah tersedia di `nifi/flow.json` dengan panduan di `nifi/README.md`.
+
+Jika ingin mencoba NiFi:
+1. Jalankan NiFi: `scripts\start_nifi.bat` (port 8080).
+2. Buka `http://localhost:8080/nifi`.
+3. Buat Process Group `karhutla-nrt`, impor `nifi/flow.json`.
+4. Konfiguri `FIRMS_MAP_KEY`, `FIRMS_BBOX`, dan Hadoop Configuration Resources.
+5. Mulai semua processor.
+
+Endpoint `/api/ingest/firms-nrt` dan `/api/ingest/compact-nrt` tetap berfungsi sebagai fallback saat NiFi tidak nyala.
+
+---
+
+## Troubleshooting
+
+### HDFS / DataNode tidak aktif (semua blok "missing")
+
+Gejala: `/api/health` mengembalikan `hdfs.reachable: false`, atau Spark gagal membaca blok dengan `BlockMissingException: No live nodes contain current block`.
+
+Penyebab umum: NameNode nyala tetapi DataNode tidak terdaftar (hampir semua proses Java dimatikan saat restart).
+
+Coba langkah berikut:
+
+1. Matikan semua proses Java terkait Hadoop/Spark:
+   ```powershell
+   Get-Process java | Stop-Process -Force
+   ```
+2. Nyalakan HDFS lagi (CMD Administrator):
+   ```bat
+   scripts\start_hdfs.bat
+   ```
+3. Tunggu NameNode siap (~15 detik), lalu periksa:
+   ```bat
+   hdfs dfsadmin -report
+   ```
+   Pastikan bagian **Datanodes** menunjukkan **Live Nodes: 1** dan **Dead Nodes: 0**.
+4. Jika masih ada missing blocks, periksa log di `C:\hadoop-3.5.0\logs\hadoop-*-datanode-*.log`.
+
+> Jangan jalankan `hdfs namenode -format` (dilarang oleh AGENTS.md).
+
+### Spark job gagal / OOM
+
+- Pastikan RAM bebas cukup (minimal ~2 GB untuk driver).
+- Memori driver diturunkan otomatis bila RAM bebas kurang (lihat `backend/app/pipeline/spark_runner.py`).
+- Satu job Spark pada satu waktu; job lain akan menunggu dalam antrean.
+
+### Frontend crash saat kembali ke halaman Peta
+
+Sudah diperbaiki di commit terbaru (`SafeMapContainer`). Pastikan frontend di-build ulang atau di-restart setelah `npm install` jika ada perubahan dependensi.
+
+### Data masih "Data tertunda"
+
+Berarti serving layer belum diperbarui dengan data terbaru. Jalankan:
+1. `POST /api/ingest/firms-nrt` (atau tambahkan file ke `C:\karhutla-data\inbox` lalu `POST /api/ingest/inbox`).
+2. `POST /api/preprocessing/run`.
+3. `POST /api/analytics/refresh`.
+
+Lalu periksa `http://localhost:8000/api/health` -> `serving.freshness.label` harus `Data terkini`.
+
+---
 
 ## Verifikasi Kriteria Terima (AC-1 s/d AC-9)
 
@@ -62,18 +233,37 @@ Laporan job: `C:\karhutla-data\serving\pipeline_run_summary.json`, `serving_meta
 | AC-1: Dataset mentah >= 1.000.000 baris di HDFS | ✅ Terpenuhi | clean/hotspot: 2.134.784 baris |
 | AC-2: Format FIRMS (VIIRS/MODIS/arsip/API) terbaca otomatis | ✅ Terpenuhi | Adapter deteksi format + karantina |
 | AC-3: Pre-processing Parquet di `/karhutla/clean` + laporan | ✅ Terpenuhi | Spark pre-processing, laporan funnel |
-| AC-4: Peta <= 3 detik (jendela 24 jam), max 20.000 titik | ✅ Terpenuhi | KPI 190 ms, grid 51 ms, hotspot maks 246 ms |
-| AC-5: Dashboard Analitik <= 5 detik | ✅ Terpenuhi | Semua endpoint <= 744 ms (uji browser 1,17 s) |
-| AC-6: NiFi NRT tiap 3 jam ke `/karhutla/raw/firms_nrt` | ⚠️ Siap | `nifi/flow.json` + endpoint fallback; NiFi belum dijalankan |
+| AC-4: Peta <= 3 detik (jendela 24 jam), max 20.000 titik | ✅ Terpenuhi | KPI ~190 ms, grid ~51 ms, hotspot maks 246 ms |
+| AC-5: Dashboard Analitik <= 5 detik | ✅ Terpenuhi | Semua endpoint <= 744 ms |
+| AC-6: NiFi NRT tiap 3 jam ke `/karhutla/raw/firms_nrt` | ⚠️ Siap | `nifi/flow.json` tersedia; fallback endpoint aktif |
 | AC-7: Model metrik + split waktu + baseline persistensi | ✅ Terpenuhi | RF: AUC-ROC 0,886 / AUC-PR 0,686; baseline: 0,752 / 0,501 |
 | AC-8: Upload manual melewati pipeline yang sama | ✅ Terpenuhi | `POST /api/datasets/*`, `ingest.py` |
-| AC-9: README memungkinkan jalan dari nol | ✅ Terpenuhi | Skrip start/stop/check tersedia |
+| AC-9: README memungkinkan jalan dari nol | 🔄 Dalam proses | Dokumen ini |
 
-## Definisi Selesai (PRD Bagian 17)
+---
 
-1. AC-1 sampai AC-9 terpenuhi pada data nyata >= 1 juta baris ✅
-2. Tiga halaman berfungsi end-to-end dan konsisten dengan `docs/UI_SPEC.md` ✅
-3. NiFi flow berjalan dan terdokumentasi dengan bukti file NRT di HDFS ⚠️ (flow.json tersedia, NiFi belum dijalankan)
-4. Model terlatih, metrik tercatat, peta risiko tampil ✅
-5. README dan skrip start/stop/check memungkinkan jalan dari nol ✅
-6. Skrip demo (urutan klik dan narasi) tersedia ✅ (`docs/DEMO.md`)
+## Struktur Direktori Penting
+
+```
+C:\projects\karhutla-watch\          # Repositori kode
+  backend\                           # FastAPI + pipeline + Spark jobs
+  frontend\                          # Next.js UI
+  docs\                              # PRD, UI_SPEC, DESIGN, TASKS, dll
+  scripts\                           # start_hdfs.bat, stop_hdfs.bat, check_env.py
+  nifi\                              # flow.json + README (Fase 7)
+
+C:\karhutla-data\                    # Data, serving, log (tanpa spasi)
+  inbox\                             # Folder impor manual
+  serving\                           # Parquet + DuckDB + meta.db + logs/jobs
+  spark-tmp\                         # Temp Spark
+  staging\                           # Staging sebelum unggah ke HDFS
+```
+
+---
+
+## Lisensi dan Catatan Pengembangan
+
+- Dokumentasi teknis lengkap ada di `docs/`: PRD, UI_SPEC, DESIGN, ENVIRONMENT, TASKS, DATA_SOURCES, MODEL, ARCHITECTURE, DEMO, windows-notes.
+- Aturan agent aktif ada di `AGENTS.md` dan `.agents/rules/`.
+- Data proyek **tidak di-commit ke Git** (terlalu besar). Hanya artefak sampel kecil di `artifacts/` dan `data_samples/`.
+- Tidak ada data, kolom, versi, atau metrik yang dikarang dalam dokumen dan kode.
