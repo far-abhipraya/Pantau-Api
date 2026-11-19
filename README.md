@@ -13,23 +13,33 @@ Stack: Next.js 16 (TypeScript, Tailwind, react-leaflet, ECharts) | FastAPI + SQL
 
 ## Syarat Sistem (Windows)
 
+Komponen ini harus sudah terpasang **native di Windows** (tanpa Docker/WSL/VM):
+
 | Komponen | Versi | Catatan |
 |----------|-------|---------|
-| Java | 17 | Sudah terpasang native di Windows |
-| Hadoop | 3.5.0 | `C:\hadoop-3.5.0`, hanya HDFS (tanpa YARN) |
-| Spark | 4.2.0 | `C:\spark-4.2.0-bin-hadoop3` |
-| Python | 3.14 | Native di Windows |
+| Java | 17 | Diperlukan oleh Hadoop dan Spark |
+| Hadoop | 3.5.0 | Hanya HDFS (tanpa YARN) |
+| Spark | 4.2.0 | `spark-submit` harus bisa diakses dari PATH atau `SPARK_HOME` |
+| Python | 3.x | Sudah terpasang |
 | Node.js / npm | Terbaru | Untuk frontend Next.js 16 |
 | RAM | Minimal 8 GB disarankan | Spark driver diberi batas agar tidak OOM |
 
-**Peringatan penting (AGENTS.md):**
-- Jangan pernah menjalankan `hdfs namenode -format`.
-- Jangan mengubah/hapus path HDFS lama: `/hr-data`, `/warehouse`, `/user/alfarel`, `/test`, `/testupload`. Data proyek hanya di `/karhutla/`.
-- Jangan mengedit `core-site.xml`, `hdfs-site.xml`, `yarn-site.xml`, `mapred-site.xml`, atau `hadoop-env.cmd` tanpa persetujuan.
-- Setiap proses Hadoop/Spark perlu `HADOOP_USER_NAME=hadoop`.
-- Satu job Spark pada satu waktu (`local[4]`, driver 4 GB).
-- Kode, data, dan temp harus di path **tanpa spasi**: `C:\projects\karhutla-watch` dan `C:\karhutla-data`.
-- Tidak ada autentikasi dan tidak ada streaming sungguhan. Data tidak boleh dikarang.
+Path default yang digunakan proyek:
+- Kode: `C:\projects\karhutla-watch` (atau lokasi lain **tanpa spasi**)
+- Data: `C:\karhutla-data` (atau lokasi lain **tanpa spasi**)
+
+Jika Anda menyalin proyek ke lokasi lain, pastikan path tidak mengandung spasi dan sesuaikan `.env` jika perlu.
+
+### Catatan Penting untuk Developer / Contributor
+
+Aturan berikut berlaku untuk semua orang yang mengerjakan proyek ini:
+
+1. **Jangan pernah** menjalankan `hdfs namenode -format`.
+2. Jangan mengubah atau menghapus path HDFS lama: `/hr-data`, `/warehouse`, `/user/*`, `/test`, `/testupload`. Data proyek hanya boleh di bawah `/karhutla/`.
+3. Jangan mengedit `core-site.xml`, `hdfs-site.xml`, `yarn-site.xml`, `mapred-site.xml`, atau `hadoop-env.cmd` tanpa persetujuan.
+4. Setiap proses Hadoop/Spark perlu dijalankan dengan `HADOOP_USER_NAME=hadoop`.
+5. Satu job Spark pada satu waktu (`local[4]`, driver 4 GB). Jangan naikkan memori tanpa bukti terukur.
+6. Tidak ada autentikasi dan tidak ada streaming sungguhan. Jangan mengarang data, kolom, versi, atau metrik.
 
 ---
 
@@ -74,7 +84,7 @@ scripts\start_hdfs.bat
 
 Verifikasi NameNode: `http://localhost:9870`
 
-> Jika DataNode tidak aktif (semua blok "missing"), periksa log di `C:\hadoop-3.5.0\logs` dan pastikan tidak ada proses Java lain yang memegang port 9000/9870/50010/50075. Jangan jalankan `hdfs namenode -format`.
+> Jika DataNode tidak aktif (semua blok "missing"), periksa log DataNode dan pastikan tidak ada proses Java lain yang memegang port HDFS (NameNode 9000/9870, DataNode 50010/50075). Jangan jalankan `hdfs namenode -format`.
 
 ### 5. Nyalakan Backend (FastAPI)
 
@@ -103,15 +113,17 @@ Verifikasi: `http://localhost:3000` (Peta) dapat dimuat.
 
 ```
 1. Akuisisi
-   ├─ Impor folder manual: C:\karhutla-data\inbox  -> POST /api/ingest/inbox
+   ├─ Impor folder manual: <DATA_DIR>/inbox  -> POST /api/ingest/inbox
    ├─ Upload manual bertahap: POST /api/datasets/upload/*
    └─ NRT FIRMS (fallback NiFi): POST /api/ingest/firms-nrt
 2. Pre-processing (Spark job: preprocess.py)
    └─ Output: /karhutla/clean/hotspot (Parquet di HDFS)
 3. Serving layer (Spark job: aggregate.py)
-   └─ Output: C:\karhutla-data\serving\ (Parquet + DuckDB + SQLite meta.db)
+   └─ Output: <SERVING_DIR>/ (Parquet + DuckDB + SQLite meta.db)
 4. API baca dari serving layer (tidak hit Spark secara langsung)
 ```
+
+`DATA_DIR` dan `SERVING_DIR` diatur di `.env` (default: `C:/karhutla-data` dan `C:/karhutla-data/serving`).
 
 ### Menjalankan pre-processing + agregasi
 
@@ -127,7 +139,7 @@ Invoke-RestMethod -Uri "http://localhost:8000/api/analytics/refresh" -Method Pos
 
 Pantau status job di `http://localhost:8000/api/jobs` atau halaman `/data` -> **Riwayat Job**.
 
-Hasil serving layer tersimpan di `C:\karhutla-data\serving\` dan metadata di `C:\karhutla-data\serving\meta.db`.
+Hasil serving layer tersimpan di `<SERVING_DIR>/` (default `C:\karhutla-data\serving\`) dan metadata di `meta.db`.
 
 ---
 
@@ -201,7 +213,7 @@ Coba langkah berikut:
    hdfs dfsadmin -report
    ```
    Pastikan bagian **Datanodes** menunjukkan **Live Nodes: 1** dan **Dead Nodes: 0**.
-4. Jika masih ada missing blocks, periksa log di `C:\hadoop-3.5.0\logs\hadoop-*-datanode-*.log`.
+4. Jika masih ada missing blocks, periksa log DataNode di folder `logs` di dalam direktori Hadoop Anda (mis. `C:\hadoop-3.5.0\logs\hadoop-*-datanode-*.log`).
 
 > Jangan jalankan `hdfs namenode -format` (dilarang oleh AGENTS.md).
 
@@ -218,7 +230,7 @@ Sudah diperbaiki di commit terbaru (`SafeMapContainer`). Pastikan frontend di-bu
 ### Data masih "Data tertunda"
 
 Berarti serving layer belum diperbarui dengan data terbaru. Jalankan:
-1. `POST /api/ingest/firms-nrt` (atau tambahkan file ke `C:\karhutla-data\inbox` lalu `POST /api/ingest/inbox`).
+1. `POST /api/ingest/firms-nrt` (atau tambahkan file ke folder inbox, default `C:\karhutla-data\inbox`, lalu `POST /api/ingest/inbox`).
 2. `POST /api/preprocessing/run`.
 3. `POST /api/analytics/refresh`.
 
@@ -258,6 +270,24 @@ C:\karhutla-data\                    # Data, serving, log (tanpa spasi)
   spark-tmp\                         # Temp Spark
   staging\                           # Staging sebelum unggah ke HDFS
 ```
+
+---
+
+## Untuk Orang Lain yang Ingin Mencoba
+
+Jika Anda ingin menjalankan proyek ini di komputer Anda sendiri, berikut adalah daftar periksa cepat:
+
+1. **Pastikan Java 17, Hadoop 3.5.0, Spark 4.2.0, Python, dan Node.js sudah terpasang native di Windows.** Jangan pakai Docker atau WSL.
+2. **Clone repositori ini ke folder tanpa spasi**, mis. `C:\projects\karhutla-watch`.
+3. **Salin `.env.example` menjadi `.env`** dan sesuaikan path data jika perlu (default: `C:\karhutla-data`).
+4. **Jalankan `python scripts\check_env.py`** untuk memverifikasi semua komponen terinstal dengan benar.
+5. **Nyalakan HDFS** dengan `scripts\start_hdfs.bat` (CMD Administrator). Verifikasi di `http://localhost:9870`.
+6. **Nyalakan backend** di `backend/` dengan `python -m uvicorn app.main:app --reload --port 8000` dan `HADOOP_USER_NAME=hadoop`.
+7. **Nyalakan frontend** di `frontend/` dengan `npm run dev`. Buka `http://localhost:3000`.
+8. **Muat data terbaru:** gunakan `POST /api/ingest/firms-nrt` untuk unduh NRT FIRMS, lalu jalankan `POST /api/preprocessing/run` dan `POST /api/analytics/refresh`.
+9. **Periksa status:** `http://localhost:8000/api/health` harus menunjukkan `serving.freshness.label: Data terkini`.
+
+Jika menemukan error pada HDFS/DataNode, lihat bagian **Troubleshooting** di atas. Jangan jalankan `hdfs namenode -format` karena itu akan menghapus semua data di HDFS.
 
 ---
 
