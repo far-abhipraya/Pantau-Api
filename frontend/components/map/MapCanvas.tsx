@@ -2,8 +2,10 @@
 
 import { useEffect, useMemo } from "react";
 import L from "leaflet";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { TileLayer, useMap } from "react-leaflet";
 import Supercluster from "supercluster";
+
+import { SafeMapContainer } from "@/components/map/SafeMapContainer";
 
 import "leaflet/dist/leaflet.css";
 
@@ -335,7 +337,7 @@ export default function MapCanvas({
   const tiles = BASEMAPS[basemap];
 
   return (
-    <MapContainer
+    <SafeMapContainer
       center={[-2.5, 118]}
       zoom={5}
       minZoom={3}
@@ -359,6 +361,6 @@ export default function MapCanvas({
       {showProvinces ? <ProvinceLayer data={provinces} onSelect={onProvinceSelect} /> : null}
       <RiskLayer risk={risk} visible={showRisk} />
       <MapRuntime />
-    </MapContainer>
+    </SafeMapContainer>
   );
 }
