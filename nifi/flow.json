@@ -1,0 +1,143 @@
+{
+  "flow": {
+    "processGroups": [
+      {
+        "id": "root",
+        "name": "NiFi Flow",
+        "comments": "",
+        "position": { "x": 0, "y": 0 },
+        "processGroups": [
+          {
+            "id": "karhutla-nrt-pg",
+            "name": "karhutla-nrt",
+            "comments": "Akuisisi NRT FIRMS tiap 3 jam -> PutHDFS /karhutla/raw/firms_nrt/date=YYYY-MM-DD/",
+            "position": { "x": 200, "y": 200 },
+            "processors": [
+              {
+                "id": "timer-3jam",
+                "name": "Timer 3 Jam",
+                "type": "org.apache.nifi.processors.standard.GenerateFlowFile",
+                "properties": {
+                  "Batch Size": "1",
+                  "Wait Time": "0 ms",
+                  "run-schedule": "0 0 */3 * * ?"
+                },
+                "position": { "x": 0, "y": 0 }
+              },
+              {
+                "id": "invoke-http-firms",
+                "name": "InvokeHTTP FIRMS Area",
+                "type": "org.apache.nifi.processors.standard.InvokeHTTP",
+                "properties": {
+                  "HTTP Method": "GET",
+                  "Remote URL": "https://firms.modaps.eosdis.nasa.gov/api/area/csv/${FIRMS_MAP_KEY}/VIIRS_SNPP_NRT/${FIRMS_BBOX}/2/${ACQ_DATE}",
+                  "send-message-body": "false",
+                  "run-schedule": "0 sec"
+                },
+                "position": { "x": 300, "y": 0 }
+              },
+              {
+                "id": "route-on-attribute",
+                "name": "RouteOnAttribute",
+                "type": "org.apache.nifi.processors.standard.RouteOnAttribute",
+                "properties": {
+                  "RouteOnAttribute.properties.success": "${http.response.code:equals(200)}",
+                  "RouteOnAttribute.properties.failure": "${http.response.code:notEquals(200)}",
+                  "run-schedule": "0 sec"
+                },
+                "position": { "x": 600, "y": 0 }
+              },
+              {
+                "id": "update-attribute",
+                "name": "UpdateAttribute Nama File",
+                "type": "org.apache.nifi.processors.standard.UpdateAttribute",
+                "properties": {
+                  "UpdateAttribute.properties.filename": "firms_nrt_${satellite}_${now():format('yyyyMMdd_HHmmss')}.csv",
+                  "UpdateAttribute.properties.partition": "${now():format('yyyy-MM-dd')}",
+                  "run-schedule": "0 sec"
+                },
+                "position": { "x": 900, "y": 0 }
+              },
+              {
+                "id": "put-hdfs",
+                "name": "PutHDFS firms_nrt",
+                "type": "org.apache.nifi.processors.hadoop.puthdfs.PutHDFS",
+                "properties": {
+                  "Hadoop Configuration Resources": "/etc/hadoop/conf/core-site.xml,/etc/hadoop/conf/hdfs-site.xml",
+                  "Directory": "/karhutla/raw/firms_nrt/date=${partition}",
+                  "Create Directory": "true",
+                  "Conflict Resolution": "replace",
+                  "run-schedule": "0 sec"
+                },
+                "position": { "x": 1200, "y": 0 }
+              },
+              {
+                "id": "log-failure",
+                "name": "Log Failure",
+                "type": "org.apache.nifi.processors.standard.LogAttribute",
+                "properties": {
+                  "run-schedule": "0 sec"
+                },
+                "position": { "x": 600, "y": 300 }
+              }
+            ],
+            "connections": [
+              {
+                "id": "conn-timer-to-invoke",
+                "name": "Trigger Setiap 3 Jam",
+                "source": { "id": "timer-3jam", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "destination": { "id": "invoke-http-firms", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "selectedRelationships": ["success"]
+              },
+              {
+                "id": "conn-invoke-to-route",
+                "name": "Respons HTTP",
+                "source": { "id": "invoke-http-firms", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "destination": { "id": "route-on-attribute", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "selectedRelationships": ["success", "failure"]
+              },
+              {
+                "id": "conn-route-success",
+                "name": "Sukses -> UpdateAttribute",
+                "source": { "id": "route-on-attribute", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "destination": { "id": "update-attribute", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "selectedRelationships": ["success"]
+              },
+              {
+                "id": "conn-route-failure",
+                "name": "Gagal -> Log",
+                "source": { "id": "route-on-attribute", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "destination": { "id": "log-failure", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "selectedRelationships": ["failure"]
+              },
+              {
+                "id": "conn-update-to-puthdfs",
+                "name": "File ke HDFS",
+                "source": { "id": "update-attribute", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "destination": { "id": "put-hdfs", "groupId": "karhutla-nrt-pg", "type": "PROCESSOR" },
+                "selectedRelationships": ["success"]
+              }
+            ],
+            "inputPorts": [],
+            "outputPorts": [],
+            "remoteProcessGroups": [],
+            "funnels": [],
+            "labels": [],
+            "processGroups": []
+          }
+        ],
+        "processors": [],
+        "connections": [],
+        "inputPorts": [],
+        "outputPorts": [],
+        "remoteProcessGroups": [],
+        "funnels": [],
+        "labels": [],
+        "remoteInputPorts": [],
+        "remoteOutputPorts": []
+      }
+    ],
+    "timestamp": "2026-11-19T00:00:00Z",
+    "generator": "PantauApi Fase 7"
+  }
+}

@@ -18,6 +18,8 @@ const TYPE_LABEL: Record<string, string> = {
   ML_TRAIN: "Latih model",
   ML_PREDICT: "Prediksi",
   ML_REFRESH: "Fitur + latih + prediksi",
+  NRT_INGEST: "Ingest NRT FIRMS",
+  NRT_COMPACT: "Kompaksi NRT",
 };
 
 export default function JobsTab({

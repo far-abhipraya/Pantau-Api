@@ -86,15 +86,17 @@ Catatan Fase 4 (17 Nov 2026):
   Sensor belum bisa menyaring agregat harian (hanya confidence), didokumentasikan di UI.
 
 ## Fase 6: Machine Learning (B ML, A pipeline)
-- [ ] `features.py` (fitur dan label PRD Bagian 10), `train.py` (RF, GBT; split waktu; class weight), `predict.py`.
-- [ ] Simpan metrik/feature importance; bandingkan dengan baseline persistensi.
-- [ ] Section Prediksi ML dan lapisan risiko di peta.
+- [x] `features.py` (fitur dan label PRD Bagian 10), `train.py` (RF, GBT; split waktu; class weight), `predict.py`.
+- [x] Simpan metrik/feature importance; bandingkan dengan baseline persistensi.
+- [x] Section Prediksi ML dan lapisan risiko di peta.
 - Selesai bila: AC-7.
+- Bukti: `backend/spark_jobs/{features,train,predict,model_refresh,compact_nrt}.py`, endpoint `/api/analytics/model` + `/api/ingest/firms-nrt` dan `/api/ingest/compact-nrt`, UI Prediksi ML. Metrik uji: RF AUC-ROC 0,886 / AUC-PR 0,686; GBT 0,893 / 0,705; baseline 0,752 / 0,501. Tes backend 33 lulus; tsc/eslint/build OK. Commit `c5d7380`.
 
 ## Fase 7: NiFi NRT (A)
-- [ ] Process group baru "karhutla-nrt" (jangan ubah alur lama): timer 3 jam -> InvokeHTTP FIRMS `area` -> RouteOnAttribute -> UpdateAttribute -> PutHDFS `/karhutla/raw/firms_nrt/date=YYYY-MM-DD/`.
-- [ ] Retry/failure route; ekspor `nifi/flow.json` + `nifi/README.md`; job ingest NRT dan kompaksi; fallback `/api/ingest/firms-nrt`.
+- [x] Process group baru "karhutla-nrt" (jangan ubah alur lama): timer 3 jam -> InvokeHTTP FIRMS `area` -> RouteOnAttribute -> UpdateAttribute -> PutHDFS `/karhutla/raw/firms_nrt/date=YYYY-MM-DD/`.
+- [x] Retry/failure route; ekspor `nifi/flow.json` + `nifi/README.md`; job ingest NRT dan kompaksi; fallback `/api/ingest/firms-nrt`.
 - Selesai bila: AC-6.
+- Bukti: `nifi/flow.json` + `nifi/README.md`, endpoint `POST /api/ingest/firms-nrt` (fallback), `POST /api/ingest/compact-nrt` (antrekan Spark), `spark_jobs/compact_nrt.py`, JobsTab label NRT_INGEST/NRT_COMPACT. NiFi belum dijalankan (port 8080) — menunggu RAM dan persetujuan untuk start manual.
 
 ## Fase 8: Validasi dan Finalisasi (A + B)
 - [ ] Section Validasi (unggah rekap SiPongi+/BNPB, korelasi tren).
