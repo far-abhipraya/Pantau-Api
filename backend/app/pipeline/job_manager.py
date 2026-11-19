@@ -74,6 +74,16 @@ def init_db() -> None:
             ingest_path TEXT,
             created_at TEXT NOT NULL
         );
+
+        CREATE TABLE IF NOT EXISTS reference_validation (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT NOT NULL,
+            province TEXT NOT NULL,
+            source TEXT NOT NULL,
+            hotspot_count INTEGER DEFAULT 0,
+            burned_area_ha REAL,
+            created_at TEXT NOT NULL
+        );
         """
     )
     conn.commit()

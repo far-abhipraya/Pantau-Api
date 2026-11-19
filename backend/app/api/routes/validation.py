@@ -17,9 +17,12 @@ from pydantic import BaseModel
 
 from app.core.config import settings
 from app.pipeline.job_manager import (
+    _connect,
     add_ingest_log,
+    init_db,
     log_job_finish,
     log_job_start,
+    _now,
 )
 from app.services import serving
 
@@ -112,8 +115,6 @@ def upload_reference(file: UploadFile = File(...)) -> dict[str, Any]:
 
     try:
         for row in rows:
-            from app.pipeline.job_manager import _connect, _now
-
             conn = _connect()
             try:
                 conn.execute(
@@ -169,13 +170,20 @@ def compare() -> ValidationSummary:
     Mengembalikan korelasi Pearson, selisih relatif, dan RMSE untuk setiap
     tanggal yang tersedia di keduanya.
     """
-    ref_rows = serving.query(
-        """
-        SELECT date, province, source, hotspot_count, burned_area_ha
-        FROM reference_validation
-        ORDER BY date, province
-        """
-    )
+    ref_rows = []
+    init_db()
+    conn = _connect()
+    try:
+        ref_rows = conn.execute(
+            """
+            SELECT date, province, source, hotspot_count, burned_area_ha
+            FROM reference_validation
+            ORDER BY date, province
+            """
+        ).fetchall()
+    finally:
+        conn.close()
+    ref_rows = [dict(r) for r in ref_rows]
 
     if not ref_rows:
         return ValidationSummary(
