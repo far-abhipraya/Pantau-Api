@@ -86,6 +86,15 @@ export default function MapExperience() {
   const mapRef = useRef<LeafletMap | null>(null);
   const [retryToken, setRetryToken] = useState(0);
 
+  // Key yang berubah setiap kali komponen dipasang ulang (navigasi halaman),
+  // sehingga React membuat elemen DOM baru dan Leaflet tidak menemukan instance
+  // lama yang tertinggal pada elemen yang digunakan kembali oleh Next.js.
+  const [mapKey, setMapKey] = useState<string>("");
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMapKey(Math.random().toString(36).substring(2, 15));
+  }, []);
+
   const riskAvailable = risk.meta.available;
 
   useEffect(() => {
@@ -198,6 +207,7 @@ export default function MapExperience() {
     <main className="relative h-dvh w-full overflow-hidden bg-bg">
       <div className="absolute inset-0">
         <MapCanvas
+          key={mapKey}
           points={points}
           grid={grid}
           gridResolution={gridResolution}
