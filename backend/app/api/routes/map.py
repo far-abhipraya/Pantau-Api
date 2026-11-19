@@ -352,7 +352,9 @@ def provinces(
 
 
 @router.get("/risk", summary="Grid risiko prediksi 7 hari (Fase 6)")
-def risk() -> dict[str, Any]:
+def risk(
+    min_score: Annotated[float, Query(description="Skor risiko minimum (0-1), default 0,75 = hanya sangat tinggi")] = 0.75,
+) -> dict[str, Any]:
     if not serving.available_tables().get("risk_prediction"):
         return {
             "type": "FeatureCollection",
@@ -367,10 +369,11 @@ def risk() -> dict[str, Any]:
         SELECT grid_id, lat, lon, target_date, horizon_days, risk_score, risk_category,
                model_version, predicted_at
         FROM risk_prediction
+        WHERE risk_score >= ?
         ORDER BY risk_score DESC
         LIMIT ?
         """,
-        [settings.MAP_MAX_POINTS],
+        [min_score, settings.MAP_MAX_POINTS],
     )
     features = []
     for row in rows:
@@ -388,6 +391,7 @@ def risk() -> dict[str, Any]:
         "meta": {
             "available": True,
             "count": len(features),
+            "min_score": min_score,
             "max_acq_ts": datetime.now(timezone.utc).isoformat(),
         },
     }

@@ -110,7 +110,12 @@ export type ProvinceResponse = {
 export type RiskResponse = {
   type: "FeatureCollection";
   features: unknown[];
-  meta: { available: boolean; message?: string; count?: number };
+  meta: {
+    available: boolean;
+    message?: string;
+    count?: number;
+    min_score?: number;
+  };
 };
 
 export type GeoJson = {
@@ -624,7 +629,8 @@ export const api = {
     options?: RequestOptions,
   ) => get<GridResponse>("/map/grid", { bbox, ...params }, options),
   provinces: (hours: 24 | 168, options?: RequestOptions) => get<ProvinceResponse>("/map/provinces", { hours }, options),
-  risk: (options?: RequestOptions) => get<RiskResponse>("/map/risk", {}, options),
+  risk: (min_score?: number, options?: RequestOptions) =>
+    get<RiskResponse>("/map/risk", { min_score }, options),
   provincesGeo: async (options?: RequestOptions): Promise<GeoJson> => {
     const response = await fetch(`${API_BASE}/geo/provinces`, { signal: options?.signal, cache: "force-cache" });
     if (!response.ok) throw new Error("Batas provinsi tidak tersedia");

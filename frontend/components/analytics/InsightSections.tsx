@@ -166,6 +166,16 @@ export function PrediksiSection({
         <p className="w-full text-[11px] text-ember-text-muted">
           Estimasi risiko, bukan kepastian. Label: hotspot pada t+1..t+7; split berbasis waktu.
         </p>
+
+        <div className="rounded-lg border border-[#FFE8A1] bg-[#FFF9DB] px-3 py-2 text-[11px] text-[#8A4B00] mb-3">
+          <span className="font-semibold">Peringatan presisi model:</span>
+          <div className="mt-1">
+            Model Random Forest memiliki presisi 43,0% (uji): sekitar 57% prediksi &quot;ada api&quot;
+            adalah positif palsu. Peta risiko default hanya menampilkan grid dengan skor ≥ 0,75
+            (&quot;sangat tinggi&quot;), yang merupakan prediksi paling andal. Gunakan sebagai indikasi,
+            bukan kepastian kebakaran.
+          </div>
+        </div>
       </div>
 
       <div className="space-y-4 px-4 py-5">

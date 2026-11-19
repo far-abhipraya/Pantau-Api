@@ -117,7 +117,7 @@ export default function MapExperience() {
       .then((data) => setGeo(data))
       .catch(() => undefined);
     api
-      .risk({ signal: controller.signal })
+      .risk(0.75, { signal: controller.signal })
       .then((data) => setRisk(data))
       .catch(() => undefined);
     return () => controller.abort();
