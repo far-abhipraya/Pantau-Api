@@ -513,6 +513,25 @@ export type ModelRiskGrid = {
   cnt_7d?: number;
 };
 
+export type ValidationCompare = {
+  date: string;
+  pipeline_count: number;
+  reference_count: number;
+  diff: number;
+  diff_percent: number | null;
+};
+
+export type ValidationSummary = {
+  reference_rows: number;
+  reference_provinces: string[];
+  date_start: string | null;
+  date_end: string | null;
+  correlation: number | null;
+  relative_difference_percent: number | null;
+  rmse: number | null;
+  comparison: ValidationCompare[];
+};
+
 export type AnalyticsModel = {
   available: boolean;
   message?: string;
@@ -560,11 +579,15 @@ async function send<T>(
   const url = new URL(`${API_BASE}${path}`);
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
-  });
+  })
+  const isFormData = body instanceof FormData;
   const response = await fetch(url, {
     method,
-    headers: body === undefined ? { Accept: "application/json" } : { Accept: "application/json", "Content-Type": "application/json" },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: {
+      Accept: "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
+    },
+    body: isFormData ? (body as FormData) : (body === undefined ? undefined : JSON.stringify(body)),
     signal: options.signal,
     cache: "no-store",
   });
@@ -703,4 +726,16 @@ export const api = {
     post<{ job_id: string; status: string }>("/analytics/model/refresh", undefined, undefined, options),
   analyticsRefresh: (options?: RequestOptions) =>
     post<{ job_id: string; status: string }>("/analytics/refresh", undefined, undefined, options),
+  validationReferenceUpload: (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return send<{ status: string; rows_inserted: number; file: string; message: string }>(
+      "POST",
+      "/validation/reference",
+      {},
+      formData,
+    );
+  },
+  validationCompare: (options?: RequestOptions) =>
+    get<ValidationSummary>("/validation/compare", {}, options),
 };

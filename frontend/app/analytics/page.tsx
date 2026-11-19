@@ -30,6 +30,7 @@ import {
   type AnalyticsWindowDays,
   type AnalyticsYearCompare,
   type GeoJson,
+  type ValidationSummary,
   type WeatherCorrelation,
 } from "@/lib/api";
 
@@ -68,6 +69,9 @@ export default function AnalyticsPage() {
   const [model, setModel] = useState<AnalyticsModel | null>(null);
   const [modelError, setModelError] = useState<string | null>(null);
   const [modelLoading, setModelLoading] = useState(true);
+  const [validation, setValidation] = useState<ValidationSummary | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [validationLoading, setValidationLoading] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
@@ -140,6 +144,23 @@ export default function AnalyticsPage() {
     return () => controller.abort();
   }, [days, province, conf, granularity]);
 
+  // Muat data validasi (tidak bergantung filter halaman; cukup sekali).
+  useEffect(() => {
+    const controller = new AbortController();
+    api
+      .validationCompare({ signal: controller.signal })
+      .then((data) => {
+        setValidation(data);
+        setValidationError(null);
+      })
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setValidationError(error instanceof Error ? error.message : "Gagal memuat data validasi");
+      })
+      .finally(() => setValidationLoading(false));
+    return () => controller.abort();
+  }, []);
+
   // Scroll-spy ringan untuk navigasi seksi.
   useEffect(() => {
     const elements = SECTION_LINKS.map((section) => document.getElementById(section.id)).filter(
@@ -202,6 +223,14 @@ export default function AnalyticsPage() {
     } finally {
       setRefreshing(false);
     }
+  }, []);
+
+  const uploadValidation = useCallback(async (file: File) => {
+    await api.validationReferenceUpload(file);
+    // Muat ulang data validasi setelah unggah
+    const data = await api.validationCompare();
+    setValidation(data);
+    setValidationError(null);
   }, []);
 
   const periodLabel = days === 0 ? "seluruh riwayat" : `${days} hari terakhir`;
@@ -280,7 +309,13 @@ export default function AnalyticsPage() {
           onRefresh={refreshModel}
         />
 
-        <ValidasiSection />
+        <ValidasiSection
+          summary={validation}
+          compare={validation?.comparison ?? null}
+          loading={validationLoading}
+          error={validationError}
+          onUpload={uploadValidation}
+        />
 
         <p className="text-[11px] text-text-subtle">
           Sumber: NASA FIRMS (VIIRS/MODIS) yang diolah pipeline PantauApi. Semua agregat dihitung

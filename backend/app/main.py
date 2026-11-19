@@ -18,6 +18,7 @@ from app.api.routes import (
     preprocessing,
     quarantine,
     sources,
+    validation,
 )
 from app.core.config import settings
 from app.pipeline.scheduler import scheduler
@@ -64,6 +65,7 @@ app.include_router(preprocessing.router, prefix=settings.API_PREFIX)
 app.include_router(jobs.router, prefix=settings.API_PREFIX)
 app.include_router(quarantine.router, prefix=settings.API_PREFIX)
 app.include_router(ingest.router, prefix=settings.API_PREFIX)
+app.include_router(validation.router, prefix=settings.API_PREFIX)
 
 
 @app.get("/", include_in_schema=False)

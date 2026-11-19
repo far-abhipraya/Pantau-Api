@@ -3,10 +3,17 @@
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/Badge";
+import EChart from "@/components/charts/EChart";
 import SectionCard from "@/components/analytics/SectionCard";
-import type { AnalyticsModel, ModelMetric, WeatherCorrelation } from "@/lib/api";
+import type {
+  AnalyticsModel,
+  ModelMetric,
+  ValidationCompare,
+  ValidationSummary,
+  WeatherCorrelation,
+} from "@/lib/api";
 import { formatDate, formatDateTimeWib, formatNumber } from "@/lib/format";
-import { CloudSun, FlaskConical, Info, ShieldCheck } from "lucide-react";
+import { CloudSun, FlaskConical, Info, Upload } from "lucide-react";
 
 const FAKTOR_ROWS = [
   { id: "FP1", label: "Korelasi lag curah hujan / hari kering", status: "Menunggu data cuaca" },
@@ -435,20 +442,190 @@ function ConfusionCell({
   );
 }
 
-export function ValidasiSection() {
+export function ValidasiSection({
+  summary,
+  compare,
+  loading,
+  error,
+  onUpload,
+}: {
+  summary: ValidationSummary | null;
+  compare: ValidationCompare[] | null;
+  loading: boolean;
+  error?: string | null;
+  onUpload: (file: File) => Promise<void>;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadNotice, setUploadNotice] = useState<string | null>(null);
+
+  async function handleUpload(file: File) {
+    setUploading(true);
+    setUploadNotice(null);
+    try {
+      await onUpload(file);
+      setUploadNotice("Rekap SiPongi+/BNPB berhasil diunggah. Muat ulang untuk melihat perbandingan.");
+    } catch (err) {
+      setUploadNotice(err instanceof Error ? err.message : "Gagal mengunggah rekap validasi.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  const hasData = summary && summary.reference_rows > 0;
+
   return (
     <SectionCard
       id="validasi"
       title="Validasi terhadap rekap eksternal"
-      description="Perbandingan tren pipeline dengan rekap SiPongi+/BNPB."
+      description="Perbandingan tren pipeline dengan rekap SiPongi+/BNPB (korelasi dan selisih relatif)."
+      loading={loading && !summary}
+      error={error}
+      empty={!loading && !summary}
+      emptyHint="Belum ada data referensi validasi."
     >
-      <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border bg-surface-muted/50 px-4 py-8 text-center">
-        <ShieldCheck className="size-6 text-text-subtle" aria-hidden />
-        <p className="text-sm font-medium text-text">Belum ada data validasi</p>
-        <p className="max-w-xl text-xs text-text-muted">
-          Unggah rekap SiPongi+/BNPB akan diaktifkan pada Fase 8. Grafik garis ganda, korelasi, dan
-          selisih relatif baru dapat dihitung setelah rekap tersedia.
-        </p>
+      {error ? (
+        <div className="rounded-lg border border-[#FFC9C9] bg-[#FFF5F5] px-3 py-2 text-xs text-[#C92A2A]">
+          {error}
+        </div>
+      ) : null}
+
+      <div className="space-y-3 px-4 py-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex flex-col gap-1">
+            <label className="text-[11px] font-medium text-text-subtle">Unggah rekap CSV</label>
+            <p className="text-[10px] text-text-subtle">
+              SiPongi+ atau BNPB; kolom wajib: date, province, hotspot_count.
+            </p>
+          </div>
+          <label className="inline-flex items-center gap-2 rounded-lg border border-dashed border-border bg-surface-muted/50 px-4 py-3 text-[11px] text-text hover:border-border/70 cursor-pointer">
+            <Upload className="size-4 text-text-subtle" aria-hidden />
+            {uploading ? "Mengunggah…" : "Pilih file CSV"}
+            <input
+              type="file"
+              accept=".csv"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) void handleUpload(f);
+              }}
+              className="sr-only"
+            />
+          </label>
+          {uploadNotice ? (
+            <span className="text-[10px] text-text-subtle">{uploadNotice}</span>
+          ) : null}
+        </div>
+
+        {hasData ? (
+          <>
+            <div className="grid gap-3 sm:grid-cols-3 text-[11px]">
+              <div className="rounded-lg border border-border bg-surface px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-subtle">Korelasi</p>
+                <p className="text-sm font-semibold text-text">
+                  {summary.correlation === null ? "–" : summary.correlation.toFixed(3)}
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-subtle">Selisih relatif</p>
+                <p className="text-sm font-semibold text-text">
+                  {summary.relative_difference_percent === null
+                    ? "–"
+                    : `${summary.relative_difference_percent.toFixed(1)}%`}
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wide text-text-subtle">RMSE</p>
+                <p className="text-sm font-semibold text-text">
+                  {summary.rmse === null ? "–" : summary.rmse.toFixed(1)}
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border bg-surface px-3 py-2">
+              <p className="text-[10px] uppercase tracking-wide text-text-subtle mb-2">Rentang referensi</p>
+              <p className="text-text-muted">
+                {summary.date_start} s/d {summary.date_end} · {formatNumber(summary.reference_rows)} baris ·
+                provinsi: {summary.reference_provinces.join(", ")}
+              </p>
+            </div>
+
+            {compare && compare.length ? (
+              <div className="mt-3">
+                <p className="text-[11px] font-semibold text-text mb-2">
+                  Perbandingan harian (pipeline vs referensi)
+                </p>
+                <EChart
+                  option={{
+                    tooltip: { trigger: "axis" },
+                    legend: { data: ["Pipeline", "Referensi"], bottom: 0 },
+                    grid: { left: 60, right: 40, top: 40, bottom: 60 },
+                    xAxis: {
+                      type: "category",
+                      data: compare.map((c) => c.date),
+                      name: "Tanggal",
+                      axisLabel: { rotate: 45, fontSize: 10 },
+                    },
+                    yAxis: {
+                      type: "value",
+                      name: "Jumlah hotspot",
+                      axisLabel: { fontSize: 10 },
+                    },
+                    series: [
+                      {
+                        name: "Pipeline",
+                        type: "line",
+                        smooth: true,
+                        data: compare.map((c) => c.pipeline_count),
+                        itemStyle: { color: "#D9480F" },
+                      },
+                      {
+                        name: "Referensi",
+                        type: "line",
+                        smooth: true,
+                        data: compare.map((c) => c.reference_count),
+                        itemStyle: { color: "#1864AB" },
+                      },
+                    ],
+                  }}
+                  height={240}
+                />
+              </div>
+            ) : null}
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-[10px]">
+                <thead className="text-[9px] uppercase tracking-wide text-text-subtle">
+                  <tr>
+                    <th className="px-2 py-1 font-medium">Tanggal</th>
+                    <th className="px-2 py-1 font-medium">Pipeline</th>
+                    <th className="px-2 py-1 font-medium">Referensi</th>
+                    <th className="px-2 py-1 font-medium">Selisih</th>
+                    <th className="px-2 py-1 font-medium">% Selisih</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {(compare ?? []).slice(0, 30).map((c) => (
+                    <tr key={c.date}>
+                      <td className="px-2 py-1 font-mono">{c.date}</td>
+                      <td className="px-2 py-1">{formatNumber(c.pipeline_count)}</td>
+                      <td className="px-2 py-1">{formatNumber(c.reference_count)}</td>
+                      <td className="px-2 py-1">{formatNumber(c.diff)}</td>
+                      <td className="px-2 py-1">
+                        {c.diff_percent === null ? "–" : `${c.diff_percent}%`}
+                      </td>
+                    </tr>
+                  ))}
+                  {(compare ?? []).length > 30 && (
+                    <tr>
+                      <td colSpan={5} className="px-2 py-1 text-text-subtle">
+                        Menampilkan 30 dari {(compare ?? []).length} tanggal
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : null}
       </div>
     </SectionCard>
   );

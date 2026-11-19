@@ -99,7 +99,8 @@ Catatan Fase 4 (17 Nov 2026):
 - Bukti: `nifi/flow.json` + `nifi/README.md`, endpoint `POST /api/ingest/firms-nrt` (fallback), `POST /api/ingest/compact-nrt` (antrekan Spark), `spark_jobs/compact_nrt.py`, JobsTab label NRT_INGEST/NRT_COMPACT. NiFi belum dijalankan (port 8080) — menunggu RAM dan persetujuan untuk start manual.
 
 ## Fase 8: Validasi dan Finalisasi (A + B)
-- [ ] Section Validasi (unggah rekap SiPongi+/BNPB, korelasi tren).
+- [x] Section Validasi (unggah rekap SiPongi+/BNPB, korelasi tren).
 - [ ] Pengujian menyeluruh (PRD Bagian 15), optimasi performa peta, uji tablet.
 - [ ] README, diagram arsitektur, `docs/windows-notes.md`, skrip demo.
 - [ ] Cek AC-1..AC-9 dan Definisi Selesai.
+- Bukti: `backend/app/api/routes/validation.py` (POST /validation/reference, GET /validation/compare), terdaftar di main.py; frontend ValidasiSection (upload CSV, grafik garis ganda, korelasi, selisih relatif, RMSE, tabel perbandingan); `docs/TASKS.md` Fase 6-7 ditandai selesai. Tes backend 30 lulus (3 gagal pre-existing: sample CSV hilang); tsc/eslint/build OK.
